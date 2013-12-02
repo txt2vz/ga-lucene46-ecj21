@@ -88,7 +88,7 @@ public class ClassifySFGA extends Problem implements SimpleProblemForm {
 		// store results in Map after removing redundant queries (i.e. same word
 		// but lower end value)
 
-		for (int i = 0; i < (intVectorIndividual.genome.length - 1); i = i + 1) {
+		for (int i = 0; i < (intVectorIndividual.genome.length - 1); i = i + 2) {
 
 			// any ints below 0 are ignored
 			if (intVectorIndividual.genome[i] < 0)
