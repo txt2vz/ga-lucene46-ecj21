@@ -1,0 +1,400 @@
+parent.0 = ../../../ec/gp/koza/koza.params
+
+pop.subpop.0.size =64
+
+generations =	104
+#jobs=5
+seed.0=time
+seed.1=time
+seed.2=time
+seed.3=time
+
+
+evalthreads = 				4
+breedthreads = 				4
+
+#seed.0 = 4357
+seed.0 = time
+stat = research.purplefrogtext.query.ClassifyStatistics
+stat.file =	statDump/out.stat
+
+breed.elite.0 =	0
+pop.subpops = 1
+
+pop.subpop.0 = ec.Subpopulation
+pop.subpop.0.species = ec.gp.GPSpecies
+pop.subpop.0.species.fitness =	research.purplefrogtext.query.ClassifyFitness
+
+eval.problem = research.purplefrogtext.query.Classify
+#val.problem = research.purplefrogtext.query.ClassifyWeb
+eval.problem.data = research.purplefrogtext.query.QueryData
+# ADFs use the same data type typically -- we need to include
+# this even if we're not implementing ADFs
+eval.problem.stack.context.data = research.purplefrogtext.query.QueryData
+
+#stat.num-children = 1
+#stat.child.0 = ec.app.gui.SimpleXYSeriesChartStatistics
+#stat.child.0 = research.purplefrogtext.query.PFTSimpleXYSeriesChartStatistics
+#stat.child.0.title = Query Evolution2
+#stat.child.0.x-axis-label = generation
+#stat.child.0.y-axis-label = F1
+
+gp.type.a.size = 2
+gp.type.a.0.name = Int
+gp.type.a.1.name = Query
+
+gp.tc.0.returns = Query
+
+gp.nc.size = 10
+
+gp.nc.0 = ec.gp.GPNodeConstraints
+gp.nc.0.name = Int
+gp.nc.0.returns = Int
+gp.nc.0.size = 0
+
+gp.nc.1 = ec.gp.GPNodeConstraints
+gp.nc.1.name = Int2Int
+gp.nc.1.returns = Int
+gp.nc.1.size = 2
+gp.nc.1.child.0 = Int
+gp.nc.1.child.1 = Int
+
+gp.nc.2 = ec.gp.GPNodeConstraints
+gp.nc.2.name = Query3Int
+gp.nc.2.returns = Query
+gp.nc.2.size = 3
+gp.nc.2.child.0 = Int
+gp.nc.2.child.1 = Int
+gp.nc.2.child.2 = Int
+
+gp.nc.3 = ec.gp.GPNodeConstraints
+gp.nc.3.name = QueryDummy
+gp.nc.3.returns = Query
+gp.nc.3.size = 0
+
+gp.nc.4 = ec.gp.GPNodeConstraints
+gp.nc.4.name = Query1Int
+gp.nc.4.returns = Query
+gp.nc.4.size = 1
+gp.nc.4.child.0 = Int
+
+gp.nc.5 = ec.gp.GPNodeConstraints
+gp.nc.5.name = Query2Int
+gp.nc.5.returns = Query
+gp.nc.5.size = 2
+gp.nc.5.child.0 = Int
+gp.nc.5.child.1 = Int
+
+gp.nc.6 = ec.gp.GPNodeConstraints
+gp.nc.6.name = Query2Query
+gp.nc.6.returns = Query
+gp.nc.6.size = 2
+gp.nc.6.child.0 = Query
+gp.nc.6.child.1 = Query
+
+gp.nc.7 = ec.gp.GPNodeConstraints
+gp.nc.7.name = Query1Query1Int
+gp.nc.7.returns = Query
+gp.nc.7.size = 2
+gp.nc.7.child.0 = Query
+gp.nc.7.child.1 = Int
+
+gp.nc.8 = ec.gp.GPNodeConstraints
+gp.nc.8.name = Query4Int
+gp.nc.8.returns = Query
+gp.nc.8.size = 4
+gp.nc.8.child.0 = Int
+gp.nc.8.child.1 = Int
+gp.nc.8.child.2 = Int
+gp.nc.8.child.3 = Int
+
+gp.nc.9 = ec.gp.GPNodeConstraints
+gp.nc.9.name = Int1Int
+gp.nc.9.returns = Int
+gp.nc.9.size = 1
+gp.nc.9.child.0 = Int
+
+gp.fs.size = 1
+gp.fs.0.name = f0
+gp.fs.0.info = ec.gp.GPFuncInfo
+gp.fs.0.size = 68
+
+gp.fs.0.func.0 = research.purplefrogtext.query.functions.numbers.N0
+gp.fs.0.func.0.nc = Int
+gp.fs.0.func.1 = research.purplefrogtext.query.functions.numbers.N1
+gp.fs.0.func.1.nc = Int
+gp.fs.0.func.2 = research.purplefrogtext.query.functions.numbers.N2
+gp.fs.0.func.2.nc = Int
+gp.fs.0.func.3 = research.purplefrogtext.query.functions.numbers.N3
+gp.fs.0.func.3.nc = Int
+gp.fs.0.func.4 = research.purplefrogtext.query.functions.numbers.N4
+gp.fs.0.func.4.nc = Int
+gp.fs.0.func.5 = research.purplefrogtext.query.functions.numbers.N5
+gp.fs.0.func.5.nc = Int
+gp.fs.0.func.6 = research.purplefrogtext.query.functions.numbers.N6
+gp.fs.0.func.6.nc = Int
+gp.fs.0.func.7 = research.purplefrogtext.query.functions.numbers.N7
+gp.fs.0.func.7.nc = Int
+gp.fs.0.func.8 = research.purplefrogtext.query.functions.numbers.N8
+gp.fs.0.func.8.nc = Int
+gp.fs.0.func.9 = research.purplefrogtext.query.functions.numbers.N9
+gp.fs.0.func.9.nc = Int
+gp.fs.0.func.10 = research.purplefrogtext.query.functions.numbers.N10
+gp.fs.0.func.10.nc = Int
+gp.fs.0.func.11 = research.purplefrogtext.query.functions.numbers.N11
+gp.fs.0.func.11.nc = Int
+gp.fs.0.func.12 = research.purplefrogtext.query.functions.numbers.N12
+gp.fs.0.func.12.nc = Int
+gp.fs.0.func.13 = research.purplefrogtext.query.functions.numbers.N13
+gp.fs.0.func.13.nc = Int
+gp.fs.0.func.14 = research.purplefrogtext.query.functions.numbers.N14
+gp.fs.0.func.14.nc = Int
+gp.fs.0.func.15 = research.purplefrogtext.query.functions.numbers.N15
+gp.fs.0.func.15.nc = Int
+gp.fs.0.func.16 = research.purplefrogtext.query.functions.numbers.N16
+gp.fs.0.func.16.nc = Int
+gp.fs.0.func.17 = research.purplefrogtext.query.functions.numbers.N17
+gp.fs.0.func.17.nc = Int
+gp.fs.0.func.18 = research.purplefrogtext.query.functions.numbers.N18
+gp.fs.0.func.18.nc = Int
+gp.fs.0.func.19 = research.purplefrogtext.query.functions.numbers.N19
+gp.fs.0.func.19.nc = Int
+gp.fs.0.func.20 = research.purplefrogtext.query.functions.numbers.N20
+gp.fs.0.func.20.nc = Int
+gp.fs.0.func.21 = research.purplefrogtext.query.functions.numbers.N21
+gp.fs.0.func.21.nc = Int
+gp.fs.0.func.22 = research.purplefrogtext.query.functions.numbers.N22
+gp.fs.0.func.22.nc = Int
+gp.fs.0.func.23 = research.purplefrogtext.query.functions.numbers.N23
+gp.fs.0.func.23.nc = Int
+gp.fs.0.func.24 = research.purplefrogtext.query.functions.numbers.N24
+gp.fs.0.func.24.nc = Int
+gp.fs.0.func.25 = research.purplefrogtext.query.functions.numbers.N25
+gp.fs.0.func.25.nc = Int
+gp.fs.0.func.26 = research.purplefrogtext.query.functions.numbers.N26
+gp.fs.0.func.26.nc = Int
+gp.fs.0.func.27 = research.purplefrogtext.query.functions.numbers.N27
+gp.fs.0.func.27.nc = Int
+gp.fs.0.func.28 = research.purplefrogtext.query.functions.numbers.N28
+gp.fs.0.func.28.nc = Int
+gp.fs.0.func.29 = research.purplefrogtext.query.functions.numbers.N29
+gp.fs.0.func.29.nc = Int
+gp.fs.0.func.30 = research.purplefrogtext.query.functions.numbers.N30
+gp.fs.0.func.30.nc = Int
+gp.fs.0.func.31 = research.purplefrogtext.query.functions.numbers.N31
+gp.fs.0.func.31.nc = Int
+gp.fs.0.func.32 = research.purplefrogtext.query.functions.numbers.N32
+gp.fs.0.func.32.nc = Int
+gp.fs.0.func.33 = research.purplefrogtext.query.functions.numbers.N33
+gp.fs.0.func.33.nc = Int
+gp.fs.0.func.34 = research.purplefrogtext.query.functions.numbers.N34
+gp.fs.0.func.34.nc = Int
+gp.fs.0.func.35 = research.purplefrogtext.query.functions.numbers.N35
+gp.fs.0.func.35.nc = Int
+gp.fs.0.func.36 = research.purplefrogtext.query.functions.numbers.N36
+gp.fs.0.func.36.nc = Int
+gp.fs.0.func.37 = research.purplefrogtext.query.functions.numbers.N37
+gp.fs.0.func.37.nc = Int
+gp.fs.0.func.38 = research.purplefrogtext.query.functions.numbers.N38
+gp.fs.0.func.38.nc = Int
+gp.fs.0.func.39 = research.purplefrogtext.query.functions.numbers.N39
+gp.fs.0.func.39.nc = Int
+gp.fs.0.func.40 = research.purplefrogtext.query.functions.numbers.N40
+gp.fs.0.func.40.nc = Int
+gp.fs.0.func.41 = research.purplefrogtext.query.functions.numbers.N41
+gp.fs.0.func.41.nc = Int
+gp.fs.0.func.42 = research.purplefrogtext.query.functions.numbers.N42
+gp.fs.0.func.42.nc = Int
+gp.fs.0.func.43 = research.purplefrogtext.query.functions.numbers.N43
+gp.fs.0.func.43.nc = Int
+gp.fs.0.func.44 = research.purplefrogtext.query.functions.numbers.N44
+gp.fs.0.func.44.nc = Int
+gp.fs.0.func.45 = research.purplefrogtext.query.functions.numbers.N45
+gp.fs.0.func.45.nc = Int
+gp.fs.0.func.46 = research.purplefrogtext.query.functions.numbers.N46
+gp.fs.0.func.46.nc = Int
+gp.fs.0.func.47 = research.purplefrogtext.query.functions.numbers.N47
+gp.fs.0.func.47.nc = Int
+gp.fs.0.func.48 = research.purplefrogtext.query.functions.numbers.N48
+gp.fs.0.func.48.nc = Int
+gp.fs.0.func.49 = research.purplefrogtext.query.functions.numbers.N49
+gp.fs.0.func.49.nc = Int
+gp.fs.0.func.50 = research.purplefrogtext.query.functions.numbers.N50
+gp.fs.0.func.50.nc = Int
+gp.fs.0.func.51 = research.purplefrogtext.query.functions.numbers.N51
+gp.fs.0.func.51.nc = Int
+gp.fs.0.func.52 = research.purplefrogtext.query.functions.numbers.N52
+gp.fs.0.func.52.nc = Int
+gp.fs.0.func.53 = research.purplefrogtext.query.functions.numbers.N53
+gp.fs.0.func.53.nc = Int
+gp.fs.0.func.54 = research.purplefrogtext.query.functions.numbers.N54
+gp.fs.0.func.54.nc = Int
+gp.fs.0.func.55 = research.purplefrogtext.query.functions.numbers.N55
+gp.fs.0.func.55.nc = Int
+gp.fs.0.func.56 = research.purplefrogtext.query.functions.numbers.N56
+gp.fs.0.func.56.nc = Int
+gp.fs.0.func.57 = research.purplefrogtext.query.functions.numbers.N57
+gp.fs.0.func.57.nc = Int
+gp.fs.0.func.58 = research.purplefrogtext.query.functions.numbers.N58
+gp.fs.0.func.58.nc = Int
+gp.fs.0.func.59 = research.purplefrogtext.query.functions.numbers.N59
+gp.fs.0.func.59.nc = Int
+gp.fs.0.func.60 = research.purplefrogtext.query.functions.numbers.N60
+gp.fs.0.func.60.nc = Int
+gp.fs.0.func.61 = research.purplefrogtext.query.functions.numbers.N61
+gp.fs.0.func.61.nc = Int
+gp.fs.0.func.62 = research.purplefrogtext.query.functions.numbers.N62
+gp.fs.0.func.62.nc = Int
+gp.fs.0.func.63 = research.purplefrogtext.query.functions.numbers.N63
+gp.fs.0.func.63.nc = Int
+
+gp.fs.0.func.64 = research.purplefrogtext.query.functions.numbers.Add64Int
+gp.fs.0.func.64.nc = Int1Int
+
+gp.fs.0.func.65 = research.purplefrogtext.query.functions.Dummy
+gp.fs.0.func.65.nc = QueryDummy
+
+gp.fs.0.func.66 = research.purplefrogtext.query.functions.ORquery
+gp.fs.0.func.66.nc = Query2Query
+
+gp.fs.0.func.67 research.purplefrogtext.query.functions.SpanFirstGetSlop
+gp.fs.0.func.67.nc = Query2Int
+
+gp.fs.0.func.68 = research.purplefrogtext.query.functions.SpanNearFirst1Word
+gp.fs.0.func.68.nc = Query2Int
+
+
+#gp.fs.0.func.68 = research.purplefrogtext.query.functions.SpanNear1WordGetSlop
+#gp.fs.0.func.68.nc = Query2Int
+
+#gp.fs.0.func.68 research.purplefrogtext.query.functions.SpanFirstGetSlopMUST_NOT
+#gp.fs.0.func.68.nc = Query2Int
+
+#gp.fs.0.func.68 = research.purplefrogtext.query.functions.SpanNear2D
+#gp.fs.0.func.68.nc = Query2Int
+
+#gp.fs.0.func.68 = research.purplefrogtext.query.functions.SpanNear2DGetSlop
+#gp.fs.0.func.68.nc = Query3Int
+
+#gp.fs.0.func.68 = research.purplefrogtext.query.functions.SpanNear2DFirst
+#gp.fs.0.func.68.nc = Query3Int
+
+#gp.fs.0.func.70 = research.purplefrogtext.query.functions.SpanNear2DGetSlopFirst
+#gp.fs.0.func.70.nc = Query4Int
+
+#gp.fs.0.func.68 = research.purplefrogtext.query.functions.ANDquery
+#gp.fs.0.func.68.nc = Query2Query
+
+#gp.fs.0.func.71 = research.purplefrogtext.query.functions.Should
+#gp.fs.0.func.71.nc = Query1Int
+
+#gp.fs.0.func.72 = research.purplefrogtext.query.functions.Must
+#gp.fs.0.func.72.nc = Query1Int
+
+#gp.fs.0.func.70 = research.purplefrogtext.query.functions.MustNot
+#gp.fs.0.func.70.nc = Query1Int
+#gp.fs.0.func.71 = research.purplefrogtext.query.functions.AddMustNot
+#gp.fs.0.func.71.nc = Query1Query1Int
+
+#gp.fs.0.func.73 = research.purplefrogtext.query.functions.ORint2D
+#gp.fs.0.func.73.nc = Query2Int
+#gp.fs.0.func.74 = research.purplefrogtext.query.functions.ANDint2D
+#gp.fs.0.func.74.nc = Query2Int
+
+##gp.fs.0.func.75 = research.purplefrogtext.query.functions.AddShould
+#gp.fs.0.func.75.nc = Query1Query1Int
+#gp.fs.0.func.76 = research.purplefrogtext.query.functions.AddMust
+#gp.fs.0.func.76.nc = Query1Query1Int
+
+#gp.fs.0.func.67 = research.purplefrogtext.query.functions.SpanFirst100
+#gp.fs.0.func.67.nc = Query1Int
+
+#gp.fs.0.func.78 = #research.purplefrogtext.query.functions.SpanNear2DGetSlopMust
+#gp.fs.0.func.78.nc = Query3Int
+#gp.fs.0.func.79 = #research.purplefrogtext.query.functions.SpanFirstGetSlopMust
+#gp.fs.0.func.79.nc = Query2Int
+
+#gp.fs.0.func.80 = research.purplefrogtext.query.functions.MustNotFromCollect
+#gp.fs.0.func.80.nc = Query1Int
+#gp.fs.0.func.81 = research.purplefrogtext.query.functions.ANDNOTint2D
+#gp.fs.0.func.81.nc = Query3Int
+
+
+
+
+
+#gp.fs.0.func.75 = research.purplefrogtext.query.functions.SpanNear2D1int
+#gp.fs.0.func.75.nc = Query1Int
+
+
+#gp.fs.0.func.48 = research.purplefrogtext.query.functions.MustNotFromCollect
+#gp.fs.0.func.48.nc = Query1Int
+
+##use following two functions to collect phrases from a phrase only run
+##note: no significant advantage found.
+#gp.fs.0.func.48 = research.purplefrogtext.query.functions.SpanNearGetPhraseSHOULD
+#gp.fs.0.func.48.nc = Query1Int
+#gp.fs.0.func.49 = research.purplefrogtext.query.functions.SpanNearGetPhraseMUST
+#gp.fs.0.func.49.nc = Query1Int
+
+
+#gp.fs.0.func.23 = research.purplefrogtext.query.functions.SpanNearGetPhrase
+#gp.fs.0.func.23.nc = Query1Int
+#gp.fs.0.func.24 = research.purplefrogtext.query.functions.MustNotFromCollect
+#gp.fs.0.func.24.nc = Query1Int
+#gp.fs.0.func.25 = research.purplefrogtext.query.functions.MustFromCollect
+#gp.fs.0.func.25.nc = Query1Int
+#gp.fs.0.func.26 = research.purplefrogtext.query.functions.ShouldFromCollect
+#gp.fs.0.func.26.nc = Query1Int
+
+#gp.fs.0.func.20 = research.purplefrogtext.query.functions.SpanFirst
+#gp.fs.0.func.20.nc = Query1Int
+#gp.fs.0.func.21 = research.purplefrogtext.query.functions.SpanNear2D1int
+#gp.fs.0.func.21.nc = Query1Int
+#gp.fs.0.func.22 = research.purplefrogtext.query.functions.NOTint
+#gp.fs.0.func.22.nc = Query1Query1Int
+#gp.fs.0.func.23 = research.purplefrogtext.query.functions.SpanNearGetPhrase
+#gp.fs.0.func.23.nc = Query1Int
+#gp.fs.0.func.24 = research.purplefrogtext.query.functions.MustNotFromCollect
+#gp.fs.0.func.24.nc = Query1Int
+#gp.fs.0.func.25 = research.purplefrogtext.query.functions.MustFromCollect
+#gp.fs.0.func.25.nc = Query1Int
+#gp.fs.0.func.26 = research.purplefrogtext.query.functions.ShouldFromCollect
+#gp.fs.0.func.26.nc = Query1Int
+
+#gp.fs.0.func.22 = research.purplefrogtext.query.functions.SpanNotNear2D1int
+#gp.fs.0.func.22.nc = Query1Int
+#gp.fs.0.func.21 = research.purplefrogtext.query.functions.NOTquery
+#gp.fs.0.func.21.nc = Query1Int
+#gp.fs.0.func.20 = research.purplefrogtext.query.functions.ORint
+#gp.fs.0.func.20.nc = Query2Int
+#gp.fs.0.func.21 = research.purplefrogtext.query.functions.ANDint
+#gp.fs.0.func.21.nc = Query2Int
+#gp.fs.0.func.19 = research.purplefrogtext.query.functions.SpanNear3WordsExpand
+#gp.fs.0.func.19.nc = Query3Int
+#gp.fs.0.func.18 = research.purplefrogtext.query.functions.NOTnear
+#gp.fs.0.func.18.nc = Query2Int
+#gp.fs.0.func.19 = research.purplefrogtext.query.functions.SpanNear2WordsSlop1
+#gp.fs.0.func.19.nc = Query2Int
+#gp.fs.0.func.20 = research.purplefrogtext.query.functions.SpanNear3Words
+#gp.fs.0.func.20.nc = Query3Int
+#gp.fs.0.func.21 = research.purplefrogtext.query.functions.SpanNear2Wordsint
+#gp.fs.0.func.21.nc = Query3Int
+#gp.fs.0.func.22 = research.purplefrogtext.query.functions.SpanNot4Words
+#gp.fs.0.func.22.nc = Query4Int
+#gp.fs.0.func.23 = research.purplefrogtext.query.functions.SpanOR4Words
+#gp.fs.0.func.23.nc = Query4Int
+#gp.fs.0.func.23 =research.purplefrogtext.query.functions.NOT
+#gp.fs.0.func.23.nc = Query2Int
+#gp.fs.0.func.18 = research.purplefrogtext.query.functions.Phrase
+#gp.fs.0.func.18.nc = Query2Int
+#gp.fs.0.func.19 = research.purplefrogtext.query.functions.Phrase20
+#gp.fs.0.func.19.nc = Query2Int
+#gp.fs.0.func.20 = research.purplefrogtext.query.functions.Phrase3Words30
+#gp.fs.0.func.20.nc = Query3Int
+#gp.fs.0.func.21 = research.purplefrogtext.query.functions.PhraseX
+#gp.fs.0.func.21.nc = Query3Int
+#gp.fs.0.func.16 = research.purplefrogtext.query.functions.ShouldMustQuery
+#gp.fs.0.func.16.nc = Query2Query
+#gp.fs.0.func.22 = research.purplefrogtext.query.functions.LuceneMultiPhraseQuery
+#gp.fs.0.func.22.nc = Query3Int

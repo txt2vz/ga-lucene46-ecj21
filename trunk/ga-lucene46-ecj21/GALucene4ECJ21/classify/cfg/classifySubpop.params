@@ -1,0 +1,158 @@
+#to perform a classification task using 4 subpopulations
+#todo : vary parameters between populations e.g. parsimony, building, breeding etc.
+
+#parent.0 = classifyPhrase2.params 
+#parent.0=classify.params
+parent.0=classify64.params
+#parent.0 =classifyReut.params
+#parent.0=classify64WebHits.params
+
+stat.file =	statDump/out.stat
+
+#select.tournament.size = 5
+generations =	104
+#jobs=2
+seed=time
+seed.0=time
+seed.1=time
+seed.2=time
+seed.3=time
+seed.4=time
+seed.5=time
+seed.6=time
+seed.7=time
+
+#seed.0=4357
+
+evalthreads = 				4
+breedthreads = 				4
+
+pop.subpop.0.select = ec.parsimony.BucketTournamentSelection
+pop.subpop.1.select = ec.parsimony.BucketTournamentSelection
+#pop.subpop.2.select = ec.parsimony.LexiographicTournamentSelection
+pop.subpop.3.select = ec.parsimony.LexiographicTournamentSelection
+
+pop.subpops = 4
+
+pop.subpop.0 = ec.Subpopulation
+pop.subpop.0.size = 512
+pop.subpop.0.species = ec.gp.GPSpecies
+pop.subpop.0.species.ind = ec.gp.GPIndividual
+pop.subpop.0.duplicate-retries = 100
+pop.subpop.0.species.ind.numtrees = 1
+pop.subpop.0.species.ind.tree.0 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.0.tc = tc0
+pop.subpop.0.species.pipe = ec.breed.MultiBreedingPipeline
+pop.subpop.0.species.pipe.generate-max = false
+pop.subpop.0.species.pipe.num-sources = 3
+pop.subpop.0.species.pipe.source.0 = ec.gp.koza.CrossoverPipeline
+pop.subpop.0.species.pipe.source.0.prob = 0.8
+pop.subpop.0.species.pipe.source.1 = ec.breed.ReproductionPipeline
+pop.subpop.0.species.pipe.source.1.prob = 0.1
+pop.subpop.0.species.pipe.source.2 = ec.gp.koza.MutationPipeline 
+pop.subpop.0.species.pipe.source.2.prob = 0.1
+pop.subpop.0.species.fitness= research.purplefrogtext.query.ClassifyFitness
+
+pop.subpop.1 = ec.Subpopulation
+pop.subpop.1.size = 256
+pop.subpop.1.species = ec.gp.GPSpecies
+pop.subpop.1.species.ind = ec.gp.GPIndividual
+pop.subpop.1.duplicate-retries = 100
+pop.subpop.1.species.ind.numtrees = 1
+pop.subpop.1.species.ind.tree.0 = ec.gp.GPTree
+pop.subpop.1.species.ind.tree.0.tc = tc0
+pop.subpop.1.species.pipe = ec.breed.MultiBreedingPipeline
+pop.subpop.1.species.pipe.generate-max = false
+pop.subpop.1.species.pipe.num-sources = 3
+pop.subpop.1.species.pipe.source.0 = ec.gp.koza.CrossoverPipeline
+pop.subpop.1.species.pipe.source.0.prob = 0.6
+pop.subpop.1.species.pipe.source.1 = ec.breed.ReproductionPipeline
+pop.subpop.1.species.pipe.source.1.prob = 0.1
+pop.subpop.1.species.pipe.source.2 = ec.gp.koza.MutationPipeline
+pop.subpop.1.species.pipe.source.2.prob = 0.3
+pop.subpop.1.species.fitness= research.purplefrogtext.query.ClassifyFitness
+
+pop.subpop.2 = ec.Subpopulation
+pop.subpop.2.size =  256
+pop.subpop.2.species = ec.gp.GPSpecies
+pop.subpop.2.species.ind = ec.gp.GPIndividual
+pop.subpop.2.duplicate-retries = 100
+pop.subpop.2.species.ind.numtrees = 1
+pop.subpop.2.species.ind.tree.0 = ec.gp.GPTree
+pop.subpop.2.species.ind.tree.0.tc = tc0
+pop.subpop.2.species.pipe = ec.breed.MultiBreedingPipeline
+pop.subpop.2.species.pipe.generate-max = false
+pop.subpop.2.species.pipe.num-sources = 3
+pop.subpop.2.species.pipe.source.0 = ec.gp.koza.CrossoverPipeline
+pop.subpop.2.species.pipe.source.0.prob = 0.8
+pop.subpop.2.species.pipe.source.1 = ec.breed.ReproductionPipeline
+pop.subpop.2.species.pipe.source.1.prob = 0.1
+pop.subpop.2.species.pipe.source.2 = ec.gp.koza.MutationPipeline
+pop.subpop.2.species.pipe.source.2.prob = 0.1
+pop.subpop.2.species.fitness= research.purplefrogtext.query.ClassifyFitness
+
+pop.subpop.3 = ec.Subpopulation
+pop.subpop.3.size = 128
+pop.subpop.3.species = ec.gp.GPSpecies
+pop.subpop.3.species.ind = ec.gp.GPIndividual
+pop.subpop.3.duplicate-retries = 100
+pop.subpop.3.species.ind.numtrees = 1
+pop.subpop.3.species.ind.tree.0 = ec.gp.GPTree
+pop.subpop.3.species.ind.tree.0.tc = tc0
+pop.subpop.3.species.pipe = ec.breed.MultiBreedingPipeline
+pop.subpop.3.species.pipe.generate-max = false
+pop.subpop.3.species.pipe.num-sources = 3
+pop.subpop.3.species.pipe.source.0 = ec.gp.koza.CrossoverPipeline
+pop.subpop.3.species.pipe.source.0.prob = 0.8
+pop.subpop.3.species.pipe.source.1 = ec.breed.ReproductionPipeline
+pop.subpop.3.species.pipe.source.1.prob = 0.1
+pop.subpop.3.species.pipe.source.2 = ec.gp.koza.MutationPipeline
+pop.subpop.3.species.pipe.source.2.prob = 0.1
+pop.subpop.3.species.fitness= research.purplefrogtext.query.ClassifyFitness
+
+exch = ec.exchange.InterPopulationExchange
+
+exch.subpop.0.select = ec.parsimony.BucketTournamentSelection
+exch.subpop.0.select.size =7
+exch.subpop.0.mod = 20
+exch.subpop.0.start = 40
+exch.subpop.0.size = 3
+exch.subpop.0.num-dest = 3
+exch.subpop.0.dest.0 = 1
+exch.subpop.0.dest.1 = 2
+exch.subpop.0.dest.2 = 3
+
+exch.subpop.1.select = ec.select.TournamentSelection
+exch.subpop.1.select.size=7
+exch.subpop.1.mod = 20
+exch.subpop.1.start = 40
+exch.subpop.1.size = 3
+exch.subpop.1.num-dest = 1
+exch.subpop.1.dest.0 = 0
+
+exch.subpop.2.select = ec.select.TournamentSelection
+exch.subpop.2.select.size =7
+exch.subpop.2.mod = 20
+exch.subpop.2.start = 40
+exch.subpop.2.size = 3
+exch.subpop.2.num-dest = 1
+exch.subpop.2.dest.0 = 0
+
+exch.subpop.3.select = ec.select.TournamentSelection
+exch.subpop.3.select.size =7
+exch.subpop.3.mod = 20
+exch.subpop.3.start = 40
+exch.subpop.3.size = 3
+exch.subpop.3.num-dest = 1
+exch.subpop.3.dest.0 = 0
+
+#stat.num-children = 1
+#seed.0 = 4357
+#seed.0=time
+
+#stat.child.0 = ec.app.gui.SimpleXYSeriesChartStatistics
+#stat.child.0 = research.purplefrogtext.query.PFTSimpleXYSeriesChartStatistics
+#stat.child.0.title = Query Evolution
+#stat.child.0.x-axis-label = generation
+#stat.child.0.y-axis-label = value
+
