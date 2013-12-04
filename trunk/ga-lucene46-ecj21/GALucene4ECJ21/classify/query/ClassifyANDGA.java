@@ -33,7 +33,7 @@ import ec.vector.IntegerVectorIndividual;
  * @author Laurie
  */
 
-public class ClassifyORGA extends Problem implements SimpleProblemForm {
+public class ClassifyANDGA extends Problem implements SimpleProblemForm {
 
 	private IndexSearcher searcher = IndexWrapperG.getInstance()
 			.getIndexSearcher();
@@ -94,7 +94,7 @@ public class ClassifyORGA extends Problem implements SimpleProblemForm {
 
 			query.add(new TermQuery(
 					new Term(IndexWrapperG.FIELD_CONTENTS, word)),
-					BooleanClause.Occur.SHOULD);
+					BooleanClause.Occur.MUST);
 		}
 
 		try {
@@ -131,13 +131,4 @@ public class ClassifyORGA extends Problem implements SimpleProblemForm {
 		ind.evaluated = true;
 	}
 
-	// }
-
-	// @Override
-	// public void describe(Individual ind, EvolutionState state,
-	// int subpopulation, int threadnum, int log, int verbosity) {
-	//
-	// System.out.println("in describe query is: " + query + " F1 is "
-	// + F1train);
-	// }
 }

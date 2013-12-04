@@ -38,7 +38,7 @@ public class ClassifyGAStatistics extends SimpleStatistics {
 		}
 
 		//final GAFit cf = (GAFit) bestFitOfPop;
-		 final GASFQ cf = (GASFQ) bestFitOfPop;
+		 final GAFit cf = (GAFit) bestFitOfPop;
 
 		// get test results on best individual
 		try {

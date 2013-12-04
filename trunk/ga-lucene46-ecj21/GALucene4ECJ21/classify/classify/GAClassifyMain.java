@@ -7,7 +7,7 @@ import java.util.Formatter;
 
 import lucene.IndexWrapperG;
 import query.ClassifyQuery;
-import query.GASFQ;
+import query.GAFit;
 import ec.EvolutionState;
 import ec.Evolve;
 import ec.Fitness;
@@ -109,7 +109,7 @@ public class GAClassifyMain extends Evolve {
 				}
 
 				// final GAFit cfit = (GAFit) bestOfAll;
-				final GASFQ cfit = (GASFQ) bestOfAll;
+				final GAFit cfit = (GAFit) bestOfAll;
 
 				final float testF1 = cfit.getF1Test();
 				final float trainF1 = cfit.getF1Train();

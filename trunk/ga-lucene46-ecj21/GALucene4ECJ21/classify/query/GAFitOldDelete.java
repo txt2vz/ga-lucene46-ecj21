@@ -23,7 +23,7 @@ import ec.simple.SimpleFitness;
  * 
  */
 
-public class GASFQ extends SimpleFitness {
+public class GAFitOldDelete extends SimpleFitness {
 
 	private float f1train, f1Test, BEPTest;
 
@@ -56,27 +56,27 @@ public class GASFQ extends SimpleFitness {
 		s = s.replaceAll("\\)", "#~");
 		String[] al = s.split("#~");
 
-		Map<String, Integer> spanFirstMap = new TreeMap<String, Integer>();
-
-		for (int x = 0; x < al.length; x = x + 2) {// (String s2: al){
-			// System.out.println("x " + x + " is " + al[x]);
-			if (spanFirstMap.containsKey(al[x])) {
-				System.err
-						.println("error in gasfq should not have duplicate term");
-
-				// final int end = spanFirstMap.get(word);
-				// spanFirstMap.put(word, Math.max(end,
-				// intVectorIndividual.genome[x + 1]));
-			} else
-				spanFirstMap.put(al[x].trim(), Integer.parseInt(al[x + 1]));
-
-		}
-		// }
-		Map<String, Integer> r = sortByValue(spanFirstMap);
-		String sr = "";
-		for (String word : r.keySet()) {
-			sr = sr + "(" + word + " " + r.get(word) + ")";
-		}
+//		Map<String, Integer> spanFirstMap = new TreeMap<String, Integer>();
+//
+//		for (int x = 0; x < al.length; x = x + 2) {// (String s2: al){
+//			// System.out.println("x " + x + " is " + al[x]);
+//			if (spanFirstMap.containsKey(al[x])) {
+//				System.err
+//						.println("error in gasfq should not have duplicate term");
+//
+//				// final int end = spanFirstMap.get(word);
+//				// spanFirstMap.put(word, Math.max(end,
+//				// intVectorIndividual.genome[x + 1]));
+//			} else
+//				spanFirstMap.put(al[x].trim(), Integer.parseInt(al[x + 1]));
+//
+//		}
+//		// }
+//		Map<String, Integer> r = sortByValue(spanFirstMap);
+//	String sr = "";
+//		for (String word : r.keySet()) {
+//			sr = sr + "(" + word + " " + r.get(word) + ")";
+//		}
 		//
 		// SpanFirstQuery sfq = new SpanFirstQuery(new SpanTermQuery(new
 		// Term(
@@ -86,7 +86,7 @@ public class GASFQ extends SimpleFitness {
 		// query.add(sfq, BooleanClause.Occur.SHOULD);
 		// }
 
-		return sr;
+		return s;
 	}
 
 	static Map<String, Integer> sortByValue(Map<String, Integer> map) {

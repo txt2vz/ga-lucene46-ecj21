@@ -1,7 +1,7 @@
 parent.0		= simple.params
 #parent.0=classifyGAQ.params
 
-generations =	110
+generations =	111
 
 seed=time
 seed.0=time
@@ -14,8 +14,10 @@ seed.3=time
 evalthreads = 				4
 breedthreads = 				4
 
-eval.problem = query.ClassifySFGA
+#eval.problem = query.ClassifySFGA
 #eval.problem = query.ClassifyORGA
+#eval.problem = query.ClassifyANDGA
+eval.problem = query.ClassifyANDORGA
 stat = query.ClassifyGAStatistics
 stat.file = statDump/out.stat
 
@@ -29,7 +31,8 @@ pop.subpop.0 = ec.Subpopulation
 pop.subpop.0.size = 512
 pop.subpop.0.species = ec.vector.IntegerVectorSpecies
 pop.subpop.0.species.ind = ec.vector.IntegerVectorIndividual
-pop.subpop.0.species.fitness = query.GASFQ
+#pop.subpop.0.species.fitness = query.ClassifyORGA
+pop.subpop.0.species.fitness = query.GAFit
 #pop.subpop.0.species.fitness = query.GAFit
 
 pop.subpop.0.species.min-gene = -1
@@ -50,8 +53,9 @@ pop.subpop.1.duplicate-retries = 50
 
 pop.subpop.1.species = ec.vector.IntegerVectorSpecies
 pop.subpop.1.species.ind = ec.vector.IntegerVectorIndividual
-pop.subpop.1.species.fitness = query.GASFQ
+pop.subpop.1.species.fitness = query.GAFit
 #pop.subpop.1.species.fitness = query.GAFit
+#pop.subpop.1.species.fitness = query.ClassifyORGA
 
 pop.subpop.1.species.min-gene = -1
 pop.subpop.1.species.max-gene = 300
