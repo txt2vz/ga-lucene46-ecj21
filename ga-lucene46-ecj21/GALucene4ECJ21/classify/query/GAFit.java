@@ -47,46 +47,52 @@ public class GAFit extends SimpleFitness {
 		final String queryWithoutComma = query.toString(
 				IndexWrapperG.FIELD_CONTENTS).replaceAll(", ", "#~");
 
-		final String spanFirstQueryMinimal = queryWithoutComma.replaceAll(
-				"spanFirst", "");
+		boolean spanF = queryWithoutComma.contains("spanFirst");
 
-		// System.out.println("S " + spanFirstQueryMinimal);
-		String s = spanFirstQueryMinimal.replaceAll("\\(", "");
+		if (spanF) {
 
-		s = s.replaceAll("\\)", "#~");
-		String[] al = s.split("#~");
+			final String spanFirstQueryMinimal = queryWithoutComma.replaceAll(
+					"spanFirst", "");
 
-//		Map<String, Integer> spanFirstMap = new TreeMap<String, Integer>();
-//
-//		for (int x = 0; x < al.length; x = x + 2) {// (String s2: al){
-//			// System.out.println("x " + x + " is " + al[x]);
-//			if (spanFirstMap.containsKey(al[x])) {
-//				System.err
-//						.println("error in gasfq should not have duplicate term");
-//
-//				// final int end = spanFirstMap.get(word);
-//				// spanFirstMap.put(word, Math.max(end,
-//				// intVectorIndividual.genome[x + 1]));
-//			} else
-//				spanFirstMap.put(al[x].trim(), Integer.parseInt(al[x + 1]));
-//
-//		}
-//		// }
-//		Map<String, Integer> r = sortByValue(spanFirstMap);
-//	String sr = "";
-//		for (String word : r.keySet()) {
-//			sr = sr + "(" + word + " " + r.get(word) + ")";
-//		}
-		//
-		// SpanFirstQuery sfq = new SpanFirstQuery(new SpanTermQuery(new
-		// Term(
-		// IndexWrapper.FIELD_CONTENTS, word)), intVectorIndividual.genome[x
-		// + 1]);
-		//			
-		// query.add(sfq, BooleanClause.Occur.SHOULD);
-		// }
+			// System.out.println("S " + spanFirstQueryMinimal);
+			String s = spanFirstQueryMinimal.replaceAll("\\(", "");
 
-		return s;
+			s = s.replaceAll("\\)", "#~");
+			String[] al = s.split("#~");
+
+			Map<String, Integer> spanFirstMap = new TreeMap<String, Integer>();
+
+			for (int x = 0; x < al.length; x = x + 2) {// (String s2: al){
+				// System.out.println("x " + x + " is " + al[x]);
+				if (spanFirstMap.containsKey(al[x])) {
+					System.err
+							.println("error in gasfq should not have duplicate term");
+
+					// final int end = spanFirstMap.get(word);
+					// spanFirstMap.put(word, Math.max(end,
+					// intVectorIndividual.genome[x + 1]));
+				} else if (al.length > x + 1)
+					spanFirstMap.put(al[x].trim(), Integer.parseInt(al[x + 1]));
+
+			}
+			// }
+			Map<String, Integer> r = sortByValue(spanFirstMap);
+			String sr = "";
+			for (String word : r.keySet()) {
+				sr = sr + "(" + word + " " + r.get(word) + ")";
+			}
+			//
+			// SpanFirstQuery sfq = new SpanFirstQuery(new SpanTermQuery(new
+			// Term(
+			// IndexWrapper.FIELD_CONTENTS, word)), intVectorIndividual.genome[x
+			// + 1]);
+			//
+			// query.add(sfq, BooleanClause.Occur.SHOULD);
+			// }
+
+			return sr;
+		} else
+			return queryWithoutComma;
 	}
 
 	static Map<String, Integer> sortByValue(Map<String, Integer> map) {

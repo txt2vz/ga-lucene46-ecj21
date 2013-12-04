@@ -4,19 +4,17 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
 
+import lucene.ImportantWords;
+import lucene.IndexWrapperG;
+
 import org.apache.lucene.index.Term;
-//import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.IndexSearcher; //import org.apache.lucene.search.TopDocsCollector;
-import org.apache.lucene.search.TopScoreDocCollector;
+import org.apache.lucene.search.IndexSearcher; 
 import org.apache.lucene.search.TotalHitCountCollector;
 import org.apache.lucene.search.spans.SpanFirstQuery;
 import org.apache.lucene.search.spans.SpanTermQuery;
 
-import lucene.IndexWrapperG;
-import lucene.ImportantWords;
-import wordTools.TermList;
 import ec.EvolutionState;
 import ec.Individual;
 import ec.Problem;
@@ -73,7 +71,7 @@ public class ClassifySFGA extends Problem implements SimpleProblemForm {
 		if (ind.evaluated)
 			return;
 
-		GASFQ fitness = (GASFQ) ind.fitness;
+		GAFit fitness = (GAFit) ind.fitness;
 
 		IntegerVectorIndividual intVectorIndividual = (IntegerVectorIndividual) ind;
 
@@ -125,29 +123,15 @@ public class ClassifySFGA extends Problem implements SimpleProblemForm {
 			query.add(sfq, BooleanClause.Occur.SHOULD);
 		}
 
-		// for (String word : spanFirstMap.keySet()) {
-		//
-		// SpanFirstQuery sfq = new SpanFirstQuery(new SpanTermQuery(new
-		// Term(
-		// IndexWrapper.FIELD_CONTENTS, word)), intVectorIndividual.genome[x
-		// + 1]);
-		//
-		// query.add(sfq, BooleanClause.Occur.SHOULD);
-		// }
-
-		// query.setMinimumNumberShouldMatch(termNo);
 
 		fitness.setNumberOfTerms(spanFirstMap.size());
 
 		try {
-			TotalHitCountCollector collector = new TotalHitCountCollector();
-			// TopScoreDocCollector collector = TopScoreDocCollector.create(0,
-			// false);
+			TotalHitCountCollector collector = new TotalHitCountCollector();	
 			searcher.search(query, IndexWrapperG.getInstance().catTrainF,
 					collector);
 			final int positiveMatch = collector.getTotalHits();
-
-			// collector = TopScoreDocCollector.create(0, false);
+			;
 			collector = new TotalHitCountCollector();
 			searcher.search(query, IndexWrapperG.getInstance().othersTrainF,
 					collector);
@@ -172,14 +156,4 @@ public class ClassifySFGA extends Problem implements SimpleProblemForm {
 
 		ind.evaluated = true;
 	}
-
-	// }
-
-	// @Override
-	// public void describe(Individual ind, EvolutionState state,
-	// int subpopulation, int threadnum, int log, int verbosity) {
-	//
-	// System.out.println("in describe query is: " + query + " F1 is "
-	// + F1train);
-	// }
 }
