@@ -24,7 +24,6 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.QueryWrapperFilter;
 import org.apache.lucene.search.ScoreDoc;
-//import org.apache.lucene.search.Searcher;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocsCollector;
 import org.apache.lucene.search.TopScoreDocCollector;
@@ -35,8 +34,6 @@ import org.apache.lucene.search.spans.SpanQuery;
 import org.apache.lucene.search.spans.SpanTermQuery;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-//import org.apache.lucene.store.instantiated.InstantiatedIndex;
-//import org.apache.lucene.store.instantiated.InstantiatedIndexReader;
 import org.apache.lucene.util.BytesRef
 import org.apache.lucene.util.Version;
 
@@ -59,8 +56,7 @@ public class IndexInfoStaticG {
 	//"C:\\Users\\Laurie\\Java\\indexes\\reuters10pft"
 	//	"C:\\indexes\\20newsgroups";
 
-
-	private static IndexSearcher indexSearcher;
+	static IndexSearcher indexSearcher;
 
 	private static int categoryNumber = 2;
 
@@ -84,14 +80,11 @@ public class IndexInfoStaticG {
 	private static final TermQuery testQ = new TermQuery(new Term(
 	IndexInfoStaticG.FIELD_TEST_TRAIN, test));
 
-
-	public static IndexSearcher getIndexSearcher() {
-
-		if (indexSearcher == null) {
-			setIndexSearcher();
-			setFilters();			
-		}
-		return indexSearcher;
+	static {
+		IndexReader reader = DirectoryReader.open(FSDirectory.open(new File(pathToIndex)));
+		println "in IndexInfoStaticG reader.numDocs: ${reader.numDocs()} "
+		indexSearcher = new IndexSearcher(reader);
+		setFilters()
 	}
 
 	public static void setCatNumber(final int cn) {
@@ -107,23 +100,9 @@ public class IndexInfoStaticG {
 		return categoryNumber;
 	}
 
-	private static void setIndexSearcher() {
-		try {
-			IndexReader reader = DirectoryReader.open(FSDirectory.open(new File(pathToIndex)));
-			println "in IndexInfoStaticG reader.numDocs: ${reader.numDocs()} "
-			indexSearcher = new IndexSearcher(reader);
-            setFilters()
-
-		} catch (IOException e) {
-			System.err.println("Error setting index searcher: ");
-			e.printStackTrace();
-		}
-	}
-
 	private static void setFilters() throws IOException {
 
 		TermQuery catQ = new TermQuery(new Term(IndexInfoStaticG.FIELD_CATEGORY,
-				//		"01_corn"));
 				//	"02_crude"));
 				//	"C14"));
 				String.valueOf(categoryNumber)));
@@ -145,7 +124,6 @@ public class IndexInfoStaticG {
 		othersTestBQ.add(catQ, BooleanClause.Occur.MUST_NOT);
 		othersTestBQ.add(testQ, BooleanClause.Occur.MUST);
 
-        getIndexSearcher()
 		TotalHitCountCollector collector  = new TotalHitCountCollector();
 		indexSearcher.search(catTrainBQ, collector);
 		totalTrainDocsInCat = collector.getTotalHits();
@@ -214,14 +192,14 @@ public class IndexInfoStaticG {
 				int docId = it.doc;
 				Document d = searcher.doc(docId);
 				println(d.get(IndexInfoStaticG.FIELD_TEST_TRAIN) + "\t" + d.get(IndexInfoStaticG.FIELD_PATH) + "\t" +
-					d.get(IndexInfoStaticG.FIELD_CATEGORY) );
-				
+						d.get(IndexInfoStaticG.FIELD_CATEGORY) );
+
 			}
 
 			TotalHitCountCollector collector = new TotalHitCountCollector();
 			searcher.search(query, IndexInfoStaticG.catTestF,
 					collector);
-			positiveMatch = collector.getTotalHits(); 
+			positiveMatch = collector.getTotalHits();
 
 
 			collector = new TotalHitCountCollector();
