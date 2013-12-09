@@ -36,7 +36,7 @@ public class GAClassifyMain extends Evolve {
 
 	private int totPosMatchedTest = 0, totTest = 0, totNegMatchTest = 0;
 
-	private final static int NUMBER_OF_CATEGORIES = 10, NUMBER_OF_JOBS = 1,
+	private final static int NUMBER_OF_CATEGORIES = 20, NUMBER_OF_JOBS = 1,
 			START_CAT = 0;;
 
 	private double microF1AllRunsTotal = 0, macroF1AllRunsTotal = 0,
@@ -147,8 +147,7 @@ public class GAClassifyMain extends Evolve {
 
 				cleanup(state);
 
-				final Date end = new Date();
-				double t;
+				final Date end = new Date();		
 				timingInfoOut.format("%14s %d %7d %n", "Time for cat", cat,
 						end.getTime() - start.getTime());
 

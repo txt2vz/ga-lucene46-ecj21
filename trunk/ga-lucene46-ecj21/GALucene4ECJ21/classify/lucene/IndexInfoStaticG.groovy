@@ -50,8 +50,8 @@ public class IndexInfoStaticG {
 	//"C:\\Users\\laurie\\Java\\indexes\\ind1";
 	//	"C:\\Users\\laurie\\Java\\indexes\\indexReuters10";
 
-	"C:\\Users\\laurie\\Java\\indexes\\indexReuters10NoDup";
-	//"C:\\Users\\laurie\\Java\\indexes\\index20News"
+	//"C:\\Users\\laurie\\Java\\indexes\\indexReuters10NoDup";
+	"C:\\Users\\laurie\\Java\\indexes\\index20News"
 	//"C:\\Users\\Laurie\\Java\\indexes\\indexOhsumed"
 	//"C:\\Users\\Laurie\\Java\\indexes\\reuters10pft"
 	//	"C:\\indexes\\20newsgroups";
