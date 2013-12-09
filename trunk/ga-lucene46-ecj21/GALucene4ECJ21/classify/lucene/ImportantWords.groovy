@@ -29,7 +29,7 @@ public class ImportantWords {
 	public static final int SPAN_FIRST_MAX_END = 300;
 	private final static int MAX_WORDLIST_SIZE = 40;
 
-	private final IndexSearcher indexSearcher = IndexWrapperG.getInstance()
+	private final IndexSearcher indexSearcher = IndexInfoStaticG
 	.getIndexSearcher();
 
 	private Set<String> stopSet;
@@ -40,7 +40,7 @@ public class ImportantWords {
 
 	public ImportantWords() throws IOException {
 		//stopSet = StopLists.textFileToStopList();
-		IndexWrapperG.getInstance().setFilters();
+		IndexInfoStaticG.setFilters();
 		
 		def l = getF1WordList(true)
 	}
@@ -52,7 +52,7 @@ public class ImportantWords {
 	throws IOException{
 
 	
-		Terms terms = SlowCompositeReaderWrapper.wrap(indexSearcher.getIndexReader()).terms(IndexWrapperG.FIELD_CONTENTS);
+		Terms terms = SlowCompositeReaderWrapper.wrap(indexSearcher.getIndexReader()).terms(IndexInfoStaticG.FIELD_CONTENTS);
 
 		println "terms.getDocCount: ${terms.getDocCount()}"
 		println "terms.size ${terms.size()}"
@@ -68,7 +68,7 @@ public class ImportantWords {
 			
 			def word = text.utf8ToString()
 
-			final Term t = new Term(IndexWrapperG .FIELD_CONTENTS, word);
+			final Term t = new Term(IndexInfoStaticG.FIELD_CONTENTS, word);
 
 			//	if (indexSearcher.getIndexReader().docFreq(t) < 2
 			//			|| stopSet.contains(t.text()))
@@ -82,13 +82,13 @@ public class ImportantWords {
 			int totalDocs;
 
 			if (positiveList) {
-				filter0 = IndexWrapperG.getInstance().catTrainF;
-				filter1 = IndexWrapperG.getInstance().othersTrainF;
-				totalDocs = IndexWrapperG.getInstance().totalTrainDocsInCat;
+				filter0 = IndexInfoStaticG.catTrainF;
+				filter1 = IndexInfoStaticG.othersTrainF;
+				totalDocs = IndexInfoStaticG.totalTrainDocsInCat;
 			} else {
-				filter0 = IndexWrapperG.getInstance().othersTrainF;
-				filter1 = IndexWrapperG.getInstance().catTrainF;
-				totalDocs = IndexWrapperG.getInstance().totalOthersTrainDocs;
+				filter0 = IndexInfoStaticG.othersTrainF;
+				filter1 = IndexInfoStaticG.catTrainF;
+				totalDocs = IndexInfoStaticG.totalOthersTrainDocs;
 			}
 
 			TotalHitCountCollector collector  = new TotalHitCountCollector();
@@ -117,7 +117,7 @@ public class ImportantWords {
 		
 		def firstWord = wordMap.keySet().first()
 		
-		 Query sfqtest = new SpanFirstQuery(new SpanTermQuery(new Term(IndexWrapperG.FIELD_CONTENTS, firstWord )),
+		 Query sfqtest = new SpanFirstQuery(new SpanTermQuery(new Term(IndexInfoStaticG.FIELD_CONTENTS, firstWord )),
 			SPAN_FIRST_MAX_END);		
 		
 		TotalHitCountCollector collector  = new TotalHitCountCollector();

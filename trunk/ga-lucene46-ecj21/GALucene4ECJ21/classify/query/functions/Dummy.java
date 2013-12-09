@@ -6,7 +6,7 @@ import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.spans.SpanTermQuery;
 
-import lucene.IndexWrapperG;
+import lucene.IndexInfoStaticG;
 import query.*;
 
 
@@ -48,7 +48,7 @@ public class Dummy extends GPNode {
 
 		rd.query = new BooleanQuery(true);
 
-		rd.query.add(new TermQuery(new Term(IndexWrapperG.FIELD_CONTENTS, DUMMY_STRING)),
+		rd.query.add(new TermQuery(new Term(IndexInfoStaticG.FIELD_CONTENTS, DUMMY_STRING)),
 				BooleanClause.Occur.MUST);
 		//rd.query = new SpanTermQuery(new Term(PFTData.FIELD_CONTENTS, DUMMY_STRING));	
 	}

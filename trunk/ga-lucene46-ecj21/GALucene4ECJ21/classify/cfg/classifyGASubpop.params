@@ -1,7 +1,7 @@
 parent.0		= simple.params
 #parent.0=classifyGAQ.params
 
-generations =	111
+generations =	204
 
 seed=time
 seed.0=time
@@ -14,10 +14,10 @@ seed.3=time
 evalthreads = 				4
 breedthreads = 				4
 
-#eval.problem = query.ClassifySFGA
+eval.problem = query.ClassifySFGA
 #eval.problem = query.ClassifyORGA
 #eval.problem = query.ClassifyANDGA
-eval.problem = query.ClassifyANDORGA
+#eval.problem = query.ClassifyANDORGA
 stat = query.ClassifyGAStatistics
 stat.file = statDump/out.stat
 
@@ -37,7 +37,7 @@ pop.subpop.0.species.fitness = query.GAFit
 
 pop.subpop.0.species.min-gene = -1
 pop.subpop.0.species.max-gene = 300
-pop.subpop.0.species.genome-size = 14
+pop.subpop.0.species.genome-size = 28
 pop.subpop.0.species.crossover-type	= two
 pop.subpop.0.species.crossover-prob	= 0.9
 pop.subpop.0.species.mutation-prob	= 0.05
@@ -59,7 +59,7 @@ pop.subpop.1.species.fitness = query.GAFit
 
 pop.subpop.1.species.min-gene = -1
 pop.subpop.1.species.max-gene = 300
-pop.subpop.1.species.genome-size = 14
+pop.subpop.1.species.genome-size = 28
 pop.subpop.1.species.crossover-type	= one
 pop.subpop.1.species.crossover-likelihood	= 0.7
 pop.subpop.1.species.mutation-prob	= 0.2

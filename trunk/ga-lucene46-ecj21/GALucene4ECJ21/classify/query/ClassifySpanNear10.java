@@ -4,20 +4,19 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
 
+import lucene.ImportantWords;
+import lucene.IndexInfoStaticG;
+
 import org.apache.lucene.index.Term;
-//import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.IndexSearcher; //import org.apache.lucene.search.TopDocsCollector;
-import org.apache.lucene.search.TermQuery;
-import org.apache.lucene.search.TopScoreDocCollector;
+import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.TotalHitCountCollector;
 import org.apache.lucene.search.spans.SpanFirstQuery;
+import org.apache.lucene.search.spans.SpanNearQuery;
+import org.apache.lucene.search.spans.SpanQuery;
 import org.apache.lucene.search.spans.SpanTermQuery;
 
-import lucene.IndexInfoStaticG;
-import lucene.ImportantWords;
-import wordTools.TermList;
 import ec.EvolutionState;
 import ec.Individual;
 import ec.Problem;
@@ -33,7 +32,7 @@ import ec.vector.IntegerVectorIndividual;
  * @author Laurie
  */
 
-public class ClassifyANDORGA extends Problem implements SimpleProblemForm {
+public class ClassifySpanNear10 extends Problem implements SimpleProblemForm {
 
 	private IndexSearcher searcher = IndexInfoStaticG.getIndexSearcher();
 
@@ -42,20 +41,26 @@ public class ClassifyANDORGA extends Problem implements SimpleProblemForm {
 	private String[] wordArray;
 
 	private BooleanQuery query;
+	
+	private final static int WORD_DISTANCE=10;
 
 	public void setup(final EvolutionState state, final Parameter base) {
 
 		super.setup(state, base);
 
-		try {
+		try {	
+
+			ImportantWords importantWords = new ImportantWords();
+
 			System.out.println("Total docs for cat  "
 					+ IndexInfoStaticG.getCatnumberAsString() + " "
 					+ IndexInfoStaticG.totalTrainDocsInCat
 					+ " Total test docs for cat "
 					+ IndexInfoStaticG.totalTestDocsInCat);
 
-			ImportantWords iw = new ImportantWords();
-			wordArray = iw.getF1WordList(true);
+			wordArray = importantWords.getF1WordList(true);
+
+			System.out.println();
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -72,44 +77,57 @@ public class ClassifyANDORGA extends Problem implements SimpleProblemForm {
 
 		IntegerVectorIndividual intVectorIndividual = (IntegerVectorIndividual) ind;
 
+		// use sorted map to remove redundant elements and improve readability
+		Map<String, String> spanNearMap = new TreeMap<String, String>();
+
 		// create query from Map
 		query = new BooleanQuery(true);
-		for (int i = 0; i < (intVectorIndividual.genome.length - 1); i = i + 1) {
 
-			// any ints below 0 are ignored
-			if (intVectorIndividual.genome[i] < 0)
-				continue;
+		// read through vector 2 ints at at time. 1st int retrieves word, second
+		// specifies end for Lucene spanFirstQuery
+		// store results in Map after removing redundant queries (i.e. same word
+		// but lower end value)
+
+		for (int i = 0; i < (intVectorIndividual.genome.length - 1); i = i + 2) {
 
 			int wordInd = 0;
-			if (intVectorIndividual.genome[i] >= wordArray.length
-					|| intVectorIndividual.genome[i] < 0)
-				wordInd = 0;
-			else
-				wordInd = intVectorIndividual.genome[i];
 
-			final String word = wordArray[wordInd];
-
-			if (i <= 4)
-				query.add(new TermQuery(new Term(
-						IndexInfoStaticG.FIELD_CONTENTS, word)),
-						BooleanClause.Occur.MUST);
-			else
-				query.add(new TermQuery(new Term(
-						IndexInfoStaticG.FIELD_CONTENTS, word)),
-						BooleanClause.Occur.SHOULD);
-
+			if (intVectorIndividual.genome[i] < 0
+					|| intVectorIndividual.genome[i + 1] < 0
+					|| intVectorIndividual.genome[i] > wordArray.length
+					|| intVectorIndividual.genome[i + 1] > wordArray.length
+					|| intVectorIndividual.genome[i] == intVectorIndividual.genome[i + 1]
+					)
+				continue;
+		
+			final String word0 = wordArray[intVectorIndividual.genome[i]];
+			final String word1 = wordArray[intVectorIndividual.genome[i+1]];
+			spanNearMap.put(word0, word1);
+			
 		}
+
+		for (String word : spanNearMap.keySet()) {
+			
+			SpanQuery snw0   = new SpanTermQuery(new Term(IndexInfoStaticG.FIELD_CONTENTS, word));
+			SpanQuery snw1   = new SpanTermQuery(new Term(IndexInfoStaticG.FIELD_CONTENTS, spanNearMap.get(word)));			
+			
+			SpanQuery spanN =
+					   new SpanNearQuery(new SpanQuery[] {snw0,snw1}, WORD_DISTANCE, true);
+			
+			query.add(spanN, BooleanClause.Occur.SHOULD);
+		}
+
+		fitness.setNumberOfTerms(spanNearMap.size());
 
 		try {
 			TotalHitCountCollector collector = new TotalHitCountCollector();
-			// TopScoreDocCollector collector = TopScoreDocCollector.create(0,
-			// false);
-			searcher.search(query, IndexInfoStaticG.catTrainF, collector);
+			searcher.search(query, IndexInfoStaticG.catTrainF,
+					collector);
 			final int positiveMatch = collector.getTotalHits();
-
-			// collector = TopScoreDocCollector.create(0, false);
+			;
 			collector = new TotalHitCountCollector();
-			searcher.search(query, IndexInfoStaticG.othersTrainF, collector);
+			searcher.search(query, IndexInfoStaticG.othersTrainF,
+					collector);
 			final int negativeMatch = collector.getTotalHits();
 
 			F1train = ClassifyQuery.f1(positiveMatch, negativeMatch,
@@ -131,5 +149,4 @@ public class ClassifyANDORGA extends Problem implements SimpleProblemForm {
 
 		ind.evaluated = true;
 	}
-
 }

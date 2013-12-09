@@ -11,7 +11,7 @@ import java.util.TreeMap;
 
 import org.apache.lucene.search.Query;
 
-import lucene.IndexWrapperG;
+import lucene.IndexInfoStaticG;
 
 import ec.EvolutionState;
 import ec.simple.SimpleFitness;
@@ -45,7 +45,7 @@ public class GAFit extends SimpleFitness {
 
 	public String getQueryMinimal() {
 		final String queryWithoutComma = query.toString(
-				IndexWrapperG.FIELD_CONTENTS).replaceAll(", ", "#~");
+				IndexInfoStaticG.FIELD_CONTENTS).replaceAll(", ", "#~");
 
 		boolean spanF = queryWithoutComma.contains("spanFirst");
 
@@ -185,10 +185,10 @@ public class GAFit extends SimpleFitness {
 		return "Gen: " + gen + " F1: " + f1train + " Positive Match: "
 				+ positiveMatchTrain + " Negative Match: " + negativeMatchTrain
 				+ " Total positive Docs: "
-				+ IndexWrapperG.getInstance().totalTrainDocsInCat
+				+ IndexInfoStaticG.totalTrainDocsInCat
 				// + " neutral Hit " + neutralHit
 				+ '\n' + "QueryString: "
-				+ query.toString(IndexWrapperG.FIELD_CONTENTS) + '\n';
+				+ query.toString(IndexInfoStaticG.FIELD_CONTENTS) + '\n';
 	}
 
 	public void setNeutralHits(int neutralHit) {

@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Formatter;
 
-import lucene.IndexWrapperG;
+import lucene.IndexInfoStaticG;
 import query.ClassifyQuery;
 import query.GAFit;
 import ec.EvolutionState;
@@ -27,9 +27,9 @@ public class GAClassifyMain extends Evolve {
 
 	private final String parameterFilePath =
 	// "C:\\Users\\Laurie\\Java\\classifyGA\\classifyGAN\\classify\\cfg\\classifyGASubpop.params";
-	"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyGASubpop.params";
-
-	// C:\Users\laurie\Java\classifyGA\classifyGA\classify\cfg
+	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyGASubpop.params";
+	"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyGAindGene.params";
+	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyGA_SpanNear10.params";
 	// "C:\\Users\\Laurie\\JavaSource\\classifyGA\\classify\\cfg\\classifyGASubpop.params";
 
 	private Fitness bestOfAll = null;
@@ -72,7 +72,7 @@ public class GAClassifyMain extends Evolve {
 
 				Date start = new Date();
 				category = String.valueOf(cat);
-				IndexWrapperG.getInstance().setCatNumber(cat);
+				IndexInfoStaticG.setCatNumber(cat);
 				bestOfAll = null;
 
 				state = initialize(parameters, job);
@@ -119,11 +119,11 @@ public class GAClassifyMain extends Evolve {
 
 				totPosMatchedTest += cfit.getPositiveMatchTest();
 				totNegMatchTest += cfit.getNegativeMatchTest();
-				totTest += IndexWrapperG.getInstance().totalTestDocsInCat;
+				totTest += IndexInfoStaticG.totalTestDocsInCat;
 
 				if (sf) {
 					final String queryWithoutComma = cfit.getQuery()
-							.toString(IndexWrapperG.FIELD_CONTENTS)
+							.toString(IndexInfoStaticG.FIELD_CONTENTS)
 							.replaceAll(",", " ");
 
 					final String spanFirstQueryMinimal = queryWithoutComma
@@ -137,7 +137,7 @@ public class GAClassifyMain extends Evolve {
 						category, job, trainF1, testF1, testBEP,
 						cfit.getPositiveMatchTest(),
 						cfit.getNegativeMatchTest(),
-						IndexWrapperG.getInstance().totalTestDocsInCat,
+						IndexInfoStaticG.totalTestDocsInCat,
 						cfit.getQueryMinimal());
 				// spanFirstQueryMinimal);
 
