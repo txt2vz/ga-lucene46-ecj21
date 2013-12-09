@@ -8,7 +8,7 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.TopScoreDocCollector; //import org.apache.lucene.search.TopDocCollector;
 import org.apache.lucene.search.TotalHitCountCollector;
 
-import lucene.IndexWrapperG;
+import lucene.IndexInfoStaticG;
 import ec.EvolutionState;
 import ec.Fitness;
 import ec.Statistics;
@@ -43,39 +43,39 @@ public class ClassifyGAStatistics extends SimpleStatistics {
 		// get test results on best individual
 		try {
 
-			IndexSearcher searcher = IndexWrapperG.getInstance().getIndexSearcher();
+			IndexSearcher searcher = IndexInfoStaticG.getIndexSearcher();
 		
 			TotalHitCountCollector collector  = new TotalHitCountCollector();
 
 //			TopScoreDocCollector collector = TopScoreDocCollector.create(0,
 //					false);
-			searcher.search(cf.getQuery(), IndexWrapperG.getInstance().catTestF,
+			searcher.search(cf.getQuery(), IndexInfoStaticG.catTestF,
 					collector);
 			final int positiveMatchTest = collector.getTotalHits();
 
 		//	collector = TopScoreDocCollector.create(0, false);
 			collector  = new TotalHitCountCollector();
 			searcher.search(cf.getQuery(),
-					IndexWrapperG.getInstance().othersTestF, collector);
+					IndexInfoStaticG.othersTestF, collector);
 			final int negativeMatchTest = collector.getTotalHits();
 
 			cf.setTestValues(positiveMatchTest, negativeMatchTest);
 
 			cf.setF1Test(ClassifyQuery.f1(positiveMatchTest, negativeMatchTest,
-					IndexWrapperG.getInstance().totalTestDocsInCat));
+					IndexInfoStaticG.totalTestDocsInCat));
 			
 			cf.setBEPTest(ClassifyQuery.bep(positiveMatchTest, negativeMatchTest,
-					IndexWrapperG.getInstance().totalTestDocsInCat));
+					IndexInfoStaticG.totalTestDocsInCat));
 
 			System.out.println("F1Test: " + cf.getF1Test() + " F1Train: "
 					+ " bepTest " + cf.getBEPTest()
 					+ cf.getF1Train() + " positive match test: "
 					+ positiveMatchTest + " negative match test: "
 					+ negativeMatchTest + " Total test: "
-					+ IndexWrapperG.getInstance().totalTestDocsInCat
+					+ IndexInfoStaticG.totalTestDocsInCat
 					+ " Total terms in query: " + cf.getNumberOfTerms()
 					+ " neutralHit " + cf.getNeutralHit() + '\n' + " Query "
-					+ cf.getQuery().toString(IndexWrapperG.FIELD_CONTENTS));
+					+ cf.getQuery().toString(IndexInfoStaticG.FIELD_CONTENTS));
 
 		} catch (IOException e) {
 

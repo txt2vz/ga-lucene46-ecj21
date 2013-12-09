@@ -1,0 +1,75 @@
+parent.0		= simple.params
+
+generations =	10           
+
+seed=time
+seed.0=time
+seed.1=time
+seed.2=time
+seed.3=time
+
+#seed.0=4357  
+
+evalthreads = 				4
+breedthreads = 				4
+
+eval.problem = query.ClassifySFGA
+#eval.problem = query.ClassifyORGA
+#eval.problem = query.ClassifyANDGA
+#eval.problem = query.ClassifyANDORGA
+stat = query.ClassifyGAStatistics
+stat.file = statDump/out.stat
+
+select.tournament.size = 5
+#breed.elite.0 = 2
+
+pop.subpops = 1
+pop.default-subpop =0
+
+pop.subpop.0 = ec.Subpopulation
+pop.subpop.0.size = 128
+pop.subpop.0.species = ec.vector.IntegerVectorSpecies
+pop.subpop.0.species.ind = ec.vector.IntegerVectorIndividual
+#pop.subpop.0.species.fitness = query.ClassifyORGA
+pop.subpop.0.species.fitness = query.GAFit
+#pop.subpop.0.species.fitness = query.GAFit
+
+pop.subpop.0.species.min-gene = -1
+pop.subpop.0.species.max-gene = 300
+
+pop.subpop.0.species.min-gene.0 = -1
+pop.subpop.0.species.max-gene.0 = 30 
+pop.subpop.0.species.min-gene.2 = -1
+pop.subpop.0.species.max-gene.2 = 30 
+pop.subpop.0.species.min-gene.4 = -1
+pop.subpop.0.species.max-gene.4 = 30 
+pop.subpop.0.species.min-gene.6 = -1
+pop.subpop.0.species.max-gene.6 = 30 
+pop.subpop.0.species.min-gene.8 = -1
+pop.subpop.0.species.max-gene.8 = 30 
+pop.subpop.0.species.min-gene.10 = -1
+pop.subpop.0.species.max-gene.10 = 30 
+pop.subpop.0.species.min-gene.12 = -1
+pop.subpop.0.species.max-gene.12 = 30 
+pop.subpop.0.species.min-gene.14 = -1
+pop.subpop.0.species.max-gene.14 = 30 
+pop.subpop.0.species.min-gene.16 = -1
+pop.subpop.0.species.max-gene.16 = 30 
+pop.subpop.0.species.min-gene.18 = -1
+pop.subpop.0.species.max-gene.18 = 30 
+pop.subpop.0.species.min-gene.20 = -1
+pop.subpop.0.species.max-gene.20 = 30 
+
+pop.subpop.0.species.genome-size = 28
+pop.subpop.0.species.crossover-type	= two
+pop.subpop.0.species.crossover-prob	= 0.9
+pop.subpop.0.species.mutation-prob	= 0.05
+
+pop.subpop.0.species.pipe = ec.vector.breed.VectorMutationPipeline
+pop.subpop.0.species.pipe.source.0 = ec.vector.breed.VectorCrossoverPipeline
+pop.subpop.0.species.pipe.source.0.source.0	= ec.select.TournamentSelection
+pop.subpop.0.species.pipe.source.0.source.1	= ec.select.TournamentSelection
+
+
+
+

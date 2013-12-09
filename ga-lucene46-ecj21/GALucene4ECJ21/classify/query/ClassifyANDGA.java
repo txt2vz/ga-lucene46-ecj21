@@ -15,7 +15,7 @@ import org.apache.lucene.search.TotalHitCountCollector;
 import org.apache.lucene.search.spans.SpanFirstQuery;
 import org.apache.lucene.search.spans.SpanTermQuery;
 
-import lucene.IndexWrapperG;
+import lucene.IndexInfoStaticG;
 import lucene.ImportantWords;
 import wordTools.TermList;
 import ec.EvolutionState;
@@ -35,7 +35,7 @@ import ec.vector.IntegerVectorIndividual;
 
 public class ClassifyANDGA extends Problem implements SimpleProblemForm {
 
-	private IndexSearcher searcher = IndexWrapperG.getInstance()
+	private IndexSearcher searcher = IndexInfoStaticG
 			.getIndexSearcher();
 
 	private float F1train = 0;
@@ -49,13 +49,12 @@ public class ClassifyANDGA extends Problem implements SimpleProblemForm {
 		super.setup(state, base);
 
 		try {
-			IndexWrapperG.getInstance().setFilters();
-
+		
 			System.out.println("Total docs for cat  "
-					+ IndexWrapperG.getInstance().getCatnumberAsString() + " "
-					+ IndexWrapperG.getInstance().totalTrainDocsInCat
+					+ IndexInfoStaticG.getCatnumberAsString() + " "
+					+ IndexInfoStaticG.totalTrainDocsInCat
 					+ " Total test docs for cat "
-					+ IndexWrapperG.getInstance().totalTestDocsInCat);
+					+ IndexInfoStaticG.totalTestDocsInCat);
 
 			ImportantWords iw = new ImportantWords();
 			wordArray = iw.getF1WordList(true);
@@ -93,7 +92,7 @@ public class ClassifyANDGA extends Problem implements SimpleProblemForm {
 			final String word = wordArray[wordInd];
 
 			query.add(new TermQuery(
-					new Term(IndexWrapperG.FIELD_CONTENTS, word)),
+					new Term(IndexInfoStaticG.FIELD_CONTENTS, word)),
 					BooleanClause.Occur.MUST);
 		}
 
@@ -101,18 +100,18 @@ public class ClassifyANDGA extends Problem implements SimpleProblemForm {
 			TotalHitCountCollector collector = new TotalHitCountCollector();
 			// TopScoreDocCollector collector = TopScoreDocCollector.create(0,
 			// false);
-			searcher.search(query, IndexWrapperG.getInstance().catTrainF,
+			searcher.search(query, IndexInfoStaticG.catTrainF,
 					collector);
 			final int positiveMatch = collector.getTotalHits();
 
 			// collector = TopScoreDocCollector.create(0, false);
 			collector = new TotalHitCountCollector();
-			searcher.search(query, IndexWrapperG.getInstance().othersTrainF,
+			searcher.search(query, IndexInfoStaticG.othersTrainF,
 					collector);
 			final int negativeMatch = collector.getTotalHits();
 
 			F1train = ClassifyQuery.f1(positiveMatch, negativeMatch,
-					IndexWrapperG.getInstance().totalTrainDocsInCat);
+					IndexInfoStaticG.totalTrainDocsInCat);
 
 			fitness.setTrainValues(positiveMatch, negativeMatch);
 			fitness.setF1Train(F1train);

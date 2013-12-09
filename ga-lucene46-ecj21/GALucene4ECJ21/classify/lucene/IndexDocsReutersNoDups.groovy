@@ -23,14 +23,14 @@ import org.apache.lucene.util.Version
 
 import org.apache.lucene.index.IndexWriter;
 
-class IndexDocsNoDups {
+class IndexDocsReutersNoDups {
 	def indexPath =  "C:\\Users\\laurie\\Java\\indexes\\indexReuters10NoDup" // Create Lucene index in this directory
 	//def docsPath =  "C:\\Users\\laurie\\Dataset\\reuters-top10\\08_trade" // Index files in this directory
 	def docsPath =  "C:\\Users\\laurie\\Dataset\\reuters-top10" // Index files in this directory
 	def docsCatMap=[:]
 
 	static main(args) {
-		def p = new IndexDocsNoDups()
+		def p = new IndexDocsReutersNoDups()
 		p.setup()
 	}
 
@@ -71,16 +71,18 @@ class IndexDocsNoDups {
 		}
 
 		catNumber=0;
+		def Set<String> set=new HashSet();
 		new File(docsPath).eachDir {
+
 			it.eachFileRecurse {
 				if (!it.hidden && it.exists() && it.canRead() && !it.directory && it.name.endsWith('.txt'))  {
-					indexDocs(writer,it, catNumber)
+					if (set.add(it.name))
+						indexDocs(writer,it, catNumber)
 				}
 			}
 			catNumber++;
 		}
 
-	
 		Date end = new Date();
 		println(end.getTime() - start.getTime() + " total milliseconds");
 		println "***************************************************************"
@@ -89,14 +91,14 @@ class IndexDocsNoDups {
 		//String querystr2 =  "08_trade";
 		// the "title" arg specifies the default field to use
 		// when no field is explicitly specified in the query.
-			Query q = new QueryParser(Version.LUCENE_45, IndexWrapperG.FIELD_CONTENTS, analyzer).parse(querystr);
+		Query q = new QueryParser(Version.LUCENE_45, IndexWrapperG.FIELD_CONTENTS, analyzer).parse(querystr);
 		//Query q = new QueryParser(Version.LUCENE_46, IndexWrapperG.FIELD_CATEGORY, analyzer).parse(querystr);
 
 		// 3. search
-		int hitsPerPage = 20;
+		int hitsPerPage = 5;
 		IndexReader reader =  writer.getReader();//  DirectoryReader.open(writer);
 
-		print " reader max doc " + reader.maxDoc()
+		println " reader max doc " + reader.maxDoc()
 		IndexSearcher searcher = new IndexSearcher(reader);
 		TopScoreDocCollector collector = TopScoreDocCollector.create(hitsPerPage, true);
 		searcher.search(q, collector);
@@ -110,6 +112,9 @@ class IndexDocsNoDups {
 			println(d.get(IndexWrapperG.FIELD_TEST_TRAIN) + "\t" + d.get("path") + "\t" +
 					d.get(IndexWrapperG.FIELD_CATEGORY) );
 		}
+
+		println "YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY"
+
 		reader.close();
 		writer.close();
 	}
@@ -122,9 +127,9 @@ class IndexDocsNoDups {
 
 		Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_46);
 
-		println "Indexing ${f.canonicalPath} categorynumber: $categoryNumber"
-		println " parent ${f.getParent()}"
-		println " parent parent " + f.getParentFile().getParentFile().name;
+		//	println "Indexing ${f.canonicalPath} categorynumber: $categoryNumber"
+		//	println " parent ${f.getParent()}"
+		//	println " parent parent " + f.getParentFile().getParentFile().name;
 
 		def doc = new Document()
 		FileInputStream fis=new FileInputStream(f);
