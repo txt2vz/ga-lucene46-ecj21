@@ -1,31 +1,15 @@
 package query;
 
-import java.io.IOException;
 
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.Scorer;
-//import org.apache.lucene.store.instantiated.InstantiatedIndex;
-//import org.apache.lucene.store.instantiated.InstantiatedIndexReader;
-
-//import classify.query.functions.Dummy;
 import lucene.ImportantWords;
-import wordTools.SpanQueryList;
-import wordTools.TermList;
-import wordTools.TermListArray;
 
+import org.apache.lucene.search.Query;
 
 import ec.EvolutionState;
 import ec.gp.GPProblem;
 import ec.simple.SimpleProblemForm;
 import ec.util.Parameter;
 
-/**
- * PFT Query generation
- * 
- * @author Laurie Hirsch
- */
 
 public abstract class ClassifyQuery extends GPProblem implements SimpleProblemForm {
 
@@ -38,14 +22,14 @@ public abstract class ClassifyQuery extends GPProblem implements SimpleProblemFo
 	//protected QueryData input;
 
 	//words in order of F1 for use by GP functions
-	public TermList positiveTermList, negativeTermList;
+	//public TermList positiveTermList, negativeTermList;
 
 	protected Query query;
 	
 	//GP functions taking two word arguments such as phrase queries can use this
 	//to select the second word from a wordlist of words in aproximate order of 
 	//relatedness to the first word.
-	public TermListArray wordList2D ;//, negativeWordList2D;
+	//public TermListArray wordList2D ;//, negativeWordList2D;
 	//public SpanQueryList spanNearList;
 
 	public void setup(final EvolutionState state, final Parameter base) {
@@ -86,24 +70,6 @@ public abstract class ClassifyQuery extends GPProblem implements SimpleProblemFo
 
 		return false;
 	}
-
-	/**
-	 * method returns number of query matches without scoring, sorting or
-	 * storing document references
-	 */
-//	public static int getTotalMatchedDocs(final IndexSearcher searcher, final Query query)
-//			throws IOException {
-//		int count = 0;
-//		//InstantiatedIndex is = new InstantiatedIndex(searcher.getIndexReader());
-//		//InstantiatedIndexReader iir=	is.indexReaderFactory().getIndex();	
-//		
-//		Scorer scorer = query.weight(searcher)
-//				.scorer(searcher.getIndexReader());
-//		while (scorer.next()) {    
-//			count++;
-//		}
-//		return count;
-//	}
 
 	public static float precision(final int positiveMatch, final int negativeMatch) {
 		final int totalRetrieved = positiveMatch + negativeMatch;
