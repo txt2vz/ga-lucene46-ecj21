@@ -40,9 +40,9 @@ public class ImportantWords {
 
 	public ImportantWords() throws IOException {
 		//stopSet = StopLists.textFileToStopList();
-		IndexInfoStaticG.setFilters();
-		
-		def l = getF1WordList(true)
+		//IndexInfoStaticG.setFilters();
+				
+		def wl = getF1WordList(true)
 	}
 
 	/**
@@ -50,7 +50,6 @@ public class ImportantWords {
 	 */
 	public String[] getF1WordList(final boolean positiveList)
 	throws IOException{
-
 	
 		Terms terms = SlowCompositeReaderWrapper.wrap(indexSearcher.getIndexReader()).terms(IndexInfoStaticG.FIELD_CONTENTS);
 
@@ -61,7 +60,6 @@ public class ImportantWords {
 		BytesRef text;
 		termsEnum = terms.iterator(null);
 		
-		//def termMap = [:]
 		def wordMap = [:]
 
 		while((text = termsEnum.next()) != null) {
