@@ -1,23 +1,17 @@
 package query;
 
 import java.io.IOException;
-import java.util.Map;
-import java.util.TreeMap;
+
+import lucene.ImportantWords;
+import lucene.IndexInfoStaticG;
 
 import org.apache.lucene.index.Term;
-//import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.IndexSearcher; //import org.apache.lucene.search.TopDocsCollector;
+import org.apache.lucene.search.IndexSearcher; 
 import org.apache.lucene.search.TermQuery;
-import org.apache.lucene.search.TopScoreDocCollector;
 import org.apache.lucene.search.TotalHitCountCollector;
-import org.apache.lucene.search.spans.SpanFirstQuery;
-import org.apache.lucene.search.spans.SpanTermQuery;
 
-import lucene.IndexInfoStaticG;
-import lucene.ImportantWords;
-import wordTools.TermList;
 import ec.EvolutionState;
 import ec.Individual;
 import ec.Problem;
