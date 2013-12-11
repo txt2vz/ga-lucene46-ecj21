@@ -23,18 +23,18 @@ import org.apache.lucene.util.Version
 
 import org.apache.lucene.index.IndexWriter;
 
-class Index20News {
-	def indexPath =  "C:\\Users\\laurie\\Java\\indexes\\index20News"
+class IndexOhsumed {
+	//lucene index
+	def indexPath =  "C:\\Users\\laurie\\Java\\indexes\\indexOhsumed"
 
-	// Create Lucene index in this directory
-	//def docsPath =  "C:\\Users\\laurie\\Dataset\\reuters-top10\\08_trade" // Index files in this directory
-	def docsPath = "C:\\Users\\Laurie\\Dataset\\20bydate"
+	def docsPath =
+	//"C:\\Users\\Laurie\\Dataset\\20bydate"
+	"C:\\Users\\Laurie\\Dataset\\ohsumed-first-20000-docs"
 
-	//"C:\\Users\\laurie\\Dataset\\reuters-top10" // Index files in this directory
 	def docsCatMap=[:]
 
 	static main(args) {
-		def p = new Index20News()
+		def p = new IndexOhsumed()
 		p.setup()
 	}
 
@@ -60,14 +60,31 @@ class Index20News {
 		//
 		iwc.setRAMBufferSizeMB(512.0);
 
-		IndexWriter writer = new IndexWriter(dir, iwc);        
-
-		new File(docsPath).eachDir {
-			def catNumber=0;
+		IndexWriter writer = new IndexWriter(dir, iwc);
+		
+		def catNumber=0;
+			new File(docsPath).eachDir {
+			 catNumber=0;
 			it .eachDir {
 
 				it.eachFileRecurse {
 					if (!it.hidden && it.exists() && it.canRead() && !it.directory)  {
+						docsCatMap[(it.name)] = docsCatMap.get(it.name, []) << catNumber.toString()
+					}
+				}
+				catNumber++;
+			}
+		}
+			
+			println "docscatmap size " + docsCatMap.size()
+		
+
+		new File(docsPath).eachDir {
+			 catNumber=0;
+			it .eachDir {
+
+				it.eachFileRecurse {
+					if (!it.hidden && it.exists() && it.canRead() && !it.directory)  {					
 
 						indexDocs(writer,it, catNumber)
 					}
@@ -80,7 +97,7 @@ class Index20News {
 		println(end.getTime() - start.getTime() + " total milliseconds");
 		println "***************************************************************"
 
-		String querystr =  "car";
+		String querystr =  "heart";
 		//String querystr2 =  "08_trade";
 		// the "title" arg specifies the default field to use
 		// when no field is explicitly specified in the query.
@@ -120,7 +137,7 @@ class Index20News {
 
 		Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_46);
 
-		
+
 		//			println " parent ${f.getParent()}"
 		//	println " parent parent " + f.getParentFile().getParentFile().name;
 
@@ -140,16 +157,26 @@ class Index20News {
 		doc.add(new TextField(IndexInfoStaticG.FIELD_CONTENTS, new BufferedReader(new InputStreamReader(fis, "UTF-8"))) );
 
 
+		def categoryList = docsCatMap.get(f.name)
 
-		Field categoryField = new StringField(IndexInfoStaticG.FIELD_CATEGORY, categoryNumber.toString(), Field.Store.YES);
-		doc.add(categoryField)
+		if (categoryList.size()>1)
+			println "l is  $categoryList ********************************************************************************************************************"
+
+		categoryList.each {
+			Field categoryField = new StringField(IndexInfoStaticG.FIELD_CATEGORY, it, Field.Store.YES);
+			doc.add(categoryField)
+		}
+
+
+		//Field categoryField = new StringField(IndexInfoStaticG.FIELD_CATEGORY, categoryNumber.toString(), Field.Store.YES);
+		//doc.add(categoryField)
 
 
 		String test_train
 		if ( f.canonicalPath.contains("test")) test_train="test" else test_train="train";
 		Field ttField = new StringField(IndexInfoStaticG.FIELD_TEST_TRAIN, test_train, Field.Store.YES)
 		doc.add(ttField)
-		
+
 		println "Indexing ${f.canonicalPath} categorynumber: $categoryNumber  testtrain $test_train"
 
 		writer.addDocument(doc);
