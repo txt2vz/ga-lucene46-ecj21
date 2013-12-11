@@ -58,7 +58,7 @@ public class ClassifySpanNear10 extends Problem implements SimpleProblemForm {
 					+ " Total test docs for cat "
 					+ IndexInfoStaticG.totalTestDocsInCat);
 
-			wordArray = importantWords.getF1WordList(true);
+			wordArray = importantWords.getF1WordList(false, true);
 
 			System.out.println();
 

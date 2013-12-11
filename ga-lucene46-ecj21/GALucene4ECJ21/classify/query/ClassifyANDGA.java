@@ -51,7 +51,7 @@ public class ClassifyANDGA extends Problem implements SimpleProblemForm {
 					+ IndexInfoStaticG.totalTestDocsInCat);
 
 			ImportantWords iw = new ImportantWords();
-			wordArray = iw.getF1WordList(true);
+			wordArray = iw.getF1WordList(false, true);
 
 		} catch (IOException e) {
 			e.printStackTrace();

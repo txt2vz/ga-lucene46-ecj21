@@ -13,10 +13,10 @@ seed.3=time
 evalthreads = 				4
 breedthreads = 				4
 
-eval.problem = query.ClassifySFGA
+#eval.problem = query.ClassifySFGA
 #eval.problem = query.ClassifyORGA
 #eval.problem = query.ClassifyANDGA
-#eval.problem = query.ClassifyANDORGA
+eval.problem = query.ClassifyAndOrNotGA
 stat = query.ClassifyGAStatistics
 stat.file = statDump/out.stat
 
@@ -35,30 +35,30 @@ pop.subpop.0.species.fitness = query.GAFit
 #pop.subpop.0.species.fitness = query.GAFit
 
 pop.subpop.0.species.min-gene = -1
-pop.subpop.0.species.max-gene = 300
+pop.subpop.0.species.max-gene = 40
 
 pop.subpop.0.species.min-gene.0 = -1
-pop.subpop.0.species.max-gene.0 = 40 
+pop.subpop.0.species.max-gene.0 = 4
 pop.subpop.0.species.min-gene.2 = -1
-pop.subpop.0.species.max-gene.2 = 40 
+pop.subpop.0.species.max-gene.2 = 4 
 pop.subpop.0.species.min-gene.4 = -1
-pop.subpop.0.species.max-gene.4 = 40 
+pop.subpop.0.species.max-gene.4 = 4 
 pop.subpop.0.species.min-gene.6 = -1
-pop.subpop.0.species.max-gene.6 = 40 
+pop.subpop.0.species.max-gene.6 = 4 
 pop.subpop.0.species.min-gene.8 = -1
-pop.subpop.0.species.max-gene.8 = 40 
+pop.subpop.0.species.max-gene.8 = 4 
 pop.subpop.0.species.min-gene.10 = -1
-pop.subpop.0.species.max-gene.10 = 40 
+pop.subpop.0.species.max-gene.10 = 4 
 pop.subpop.0.species.min-gene.12 = -1
-pop.subpop.0.species.max-gene.12 = 40 
+pop.subpop.0.species.max-gene.12 = 4 
 pop.subpop.0.species.min-gene.14 = -1
-pop.subpop.0.species.max-gene.14 = 40 
+pop.subpop.0.species.max-gene.14 = 4 
 pop.subpop.0.species.min-gene.16 = -1
-pop.subpop.0.species.max-gene.16 = 40 
+pop.subpop.0.species.max-gene.16 = 4 
 pop.subpop.0.species.min-gene.18 = -1
-pop.subpop.0.species.max-gene.18 = 40 
+pop.subpop.0.species.max-gene.18 = 4 
 pop.subpop.0.species.min-gene.20 = -1
-pop.subpop.0.species.max-gene.20 = 40 
+pop.subpop.0.species.max-gene.20 = 4 
 
 pop.subpop.0.species.genome-size = 22
 pop.subpop.0.species.crossover-type	= two

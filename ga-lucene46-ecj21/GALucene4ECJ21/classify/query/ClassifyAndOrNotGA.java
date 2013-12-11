@@ -20,21 +20,14 @@ import ec.simple.SimpleProblemForm;
 import ec.util.Parameter;
 import ec.vector.IntegerVectorIndividual;
 
-/**
- * To generate queries to perform binary text classification using GA string of
- * integer pairs which are translated into spanFirst queries
- * 
- * @author Laurie
- */
 
-public class ClassifyORGA extends Problem implements SimpleProblemForm {
+public class ClassifyAndOrNotGA extends Problem implements SimpleProblemForm {
 
-	private IndexSearcher searcher = IndexInfoStaticG
-			.getIndexSearcher();
+	private IndexSearcher searcher = IndexInfoStaticG.getIndexSearcher();
 
 	private float F1train = 0;
 
-	private String[] wordArray;
+	private String[] wordArrayPos, wordArrayNeg;
 
 	private BooleanQuery query;
 
@@ -43,7 +36,6 @@ public class ClassifyORGA extends Problem implements SimpleProblemForm {
 		super.setup(state, base);
 
 		try {
-			
 			System.out.println("Total docs for cat  "
 					+ IndexInfoStaticG.getCatnumberAsString() + " "
 					+ IndexInfoStaticG.totalTrainDocsInCat
@@ -51,7 +43,8 @@ public class ClassifyORGA extends Problem implements SimpleProblemForm {
 					+ IndexInfoStaticG.totalTestDocsInCat);
 
 			ImportantWords iw = new ImportantWords();
-			wordArray = iw.getF1WordList(false, true);
+			wordArrayPos = iw.getF1WordList(false, true);
+			wordArrayNeg = iw.getF1WordList(false, false);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -68,40 +61,53 @@ public class ClassifyORGA extends Problem implements SimpleProblemForm {
 
 		IntegerVectorIndividual intVectorIndividual = (IntegerVectorIndividual) ind;
 
-		// create query from Map
 		query = new BooleanQuery(true);
-		for (int i = 0; i < (intVectorIndividual.genome.length - 1); i = i + 1) {
+		for (int i = 0; i < (intVectorIndividual.genome.length - 1); i = i + 2) {
 
-			// any ints below 0 are ignored
-			if (intVectorIndividual.genome[i] < 0)
-				continue; 
+			if (intVectorIndividual.genome[i] < 0
+					|| intVectorIndividual.genome[i] >= wordArrayPos.length
+					|| intVectorIndividual.genome[i] >= wordArrayNeg.length
+					|| intVectorIndividual.genome[i + 1] < 0
+					|| intVectorIndividual.genome[i + 1] >= wordArrayPos.length
+					|| intVectorIndividual.genome[i + 1] >= wordArrayNeg.length)
+				continue;
 
-			int wordInd = 0;
-			if (intVectorIndividual.genome[i] >= wordArray.length
-					|| intVectorIndividual.genome[i] < 0)
-				wordInd = 0;
-			else
-				wordInd = intVectorIndividual.genome[i];
+			int wordInd = intVectorIndividual.genome[i + 1];
 
-			final String word = wordArray[wordInd];
-
-			query.add(new TermQuery(
-					new Term(IndexInfoStaticG.FIELD_CONTENTS, word)),
-					BooleanClause.Occur.SHOULD);
+			switch (intVectorIndividual.genome[i]) {
+			case 0:
+				query.add(
+						new TermQuery(new Term(IndexInfoStaticG.FIELD_CONTENTS,
+								wordArrayPos[wordInd])),
+						BooleanClause.Occur.SHOULD);
+				break;
+			case 1:
+				query.add(
+						new TermQuery(new Term(IndexInfoStaticG.FIELD_CONTENTS,
+								wordArrayPos[wordInd])),
+						BooleanClause.Occur.MUST);
+				break;
+			case 2:
+				query.add(
+						new TermQuery(new Term(IndexInfoStaticG.FIELD_CONTENTS,
+								wordArrayNeg[wordInd])),
+						BooleanClause.Occur.MUST_NOT);
+				break;
+			default:
+				query.add(
+						new TermQuery(new Term(IndexInfoStaticG.FIELD_CONTENTS,
+								wordArrayPos[wordInd])),
+						BooleanClause.Occur.SHOULD);
+			}
 		}
 
 		try {
 			TotalHitCountCollector collector = new TotalHitCountCollector();
-			// TopScoreDocCollector collector = TopScoreDocCollector.create(0,
-			// false);
-			searcher.search(query, IndexInfoStaticG.catTrainF,
-					collector);
+			searcher.search(query, IndexInfoStaticG.catTrainF, collector);
 			final int positiveMatch = collector.getTotalHits();
 
-			// collector = TopScoreDocCollector.create(0, false);
 			collector = new TotalHitCountCollector();
-			searcher.search(query, IndexInfoStaticG.othersTrainF,
-					collector);
+			searcher.search(query, IndexInfoStaticG.othersTrainF, collector);
 			final int negativeMatch = collector.getTotalHits();
 
 			F1train = ClassifyQuery.f1(positiveMatch, negativeMatch,

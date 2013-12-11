@@ -55,7 +55,7 @@ public class ClassifySFGA extends Problem implements SimpleProblemForm {
 					+ " Total test docs for cat "
 					+ IndexInfoStaticG.totalTestDocsInCat);
 
-			wordArray = importantWords.getF1WordList(true);
+			wordArray = importantWords.getF1WordList(true, true);
 
 			System.out.println();
 
@@ -88,17 +88,12 @@ public class ClassifySFGA extends Problem implements SimpleProblemForm {
 		for (int i = 0; i < (intVectorIndividual.genome.length - 1); i = i + 2) {
 
 			// any ints below 0 are ignored
-			if (intVectorIndividual.genome[i] < 0)
-				continue;
-
-			if (intVectorIndividual.genome[i] < 0 ||
-			// ignore clauses where end value of spanFirst is very low
+			if (intVectorIndividual.genome[i] < 0 ||			
 					intVectorIndividual.genome[i + 1] < 0)
 				continue;
 
 			int wordInd = 0;
-			if (intVectorIndividual.genome[i] >= wordArray.length
-					|| intVectorIndividual.genome[i] < 0)
+			if (intVectorIndividual.genome[i] >= wordArray.length)				
 				wordInd = 0;
 			else
 				wordInd = intVectorIndividual.genome[i];
@@ -130,7 +125,7 @@ public class ClassifySFGA extends Problem implements SimpleProblemForm {
 			searcher.search(query, IndexInfoStaticG.catTrainF,
 					collector);
 			final int positiveMatch = collector.getTotalHits();
-			;
+		
 			collector = new TotalHitCountCollector();
 			searcher.search(query, IndexInfoStaticG.othersTrainF,
 					collector);

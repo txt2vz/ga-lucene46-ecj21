@@ -27,54 +27,58 @@ import query.*;
 public class ImportantWords {
 
 	public static final int SPAN_FIRST_MAX_END = 300;
-	private final static int MAX_WORDLIST_SIZE = 40;
+	private final static int MAX_WORDLIST_SIZE = 200;
 
 	private final IndexSearcher indexSearcher = IndexInfoStaticG
 	.getIndexSearcher();
 
-	private Set<String> stopSet;
+	//private Set<String> stopSet;
 
 	public static void main(String[] args){
 		def iw = new ImportantWords()
 	}
 
 	public ImportantWords() throws IOException {
-		//stopSet = StopLists.textFileToStopList();
-		//IndexInfoStaticG.setFilters();
-				
-		def wl = getF1WordList(true)
+
+		//def wl = getF1WordList(false, true)
 	}
 
 	/**
 	 * create a set of words based on F1 measure of the word as a query
 	 */
-	public String[] getF1WordList(final boolean positiveList)
+	public String[] getF1WordList(boolean spanFirstQ, boolean positiveList)
 	throws IOException{
-	
+
 		Terms terms = SlowCompositeReaderWrapper.wrap(indexSearcher.getIndexReader()).terms(IndexInfoStaticG.FIELD_CONTENTS);
 
-		println "terms.getDocCount: ${terms.getDocCount()}"
-		println "terms.size ${terms.size()}"
+		println "Important words terms.getDocCount: ${terms.getDocCount()}"
+		println "Important words terms.size ${terms.size()}"
 
 		TermsEnum termsEnum = terms.iterator(null);
 		BytesRef text;
 		termsEnum = terms.iterator(null);
-		
+
 		def wordMap = [:]
 
 		while((text = termsEnum.next()) != null) {
-			
+
 			def word = text.utf8ToString()
 
 			final Term t = new Term(IndexInfoStaticG.FIELD_CONTENTS, word);
 
-			//	if (indexSearcher.getIndexReader().docFreq(t) < 2
+			if (indexSearcher.getIndexReader().docFreq(t) < 3)
 			//			|| stopSet.contains(t.text()))
-			//  		continue;
+			continue;
 
-			//final Query q = new TermQuery(t);
-			final Query sfq = new SpanFirstQuery(new SpanTermQuery(t),
-					SPAN_FIRST_MAX_END);
+			Query q;
+			if (spanFirstQ){
+				q = new SpanFirstQuery(new SpanTermQuery(t),
+						SPAN_FIRST_MAX_END);
+			}
+			else
+			{
+				q = new TermQuery(t);
+			}
 
 			Filter filter0, filter1;
 			int totalDocs;
@@ -90,43 +94,26 @@ public class ImportantWords {
 			}
 
 			TotalHitCountCollector collector  = new TotalHitCountCollector();
-			indexSearcher.search(sfq, filter0, collector);
+			indexSearcher.search(q, filter0, collector);
 			final int positiveHits = collector.getTotalHits();
 
 			collector  = new TotalHitCountCollector();
-			indexSearcher.search(sfq, filter1, collector);
-			def negativeHits = collector.getTotalHits();
+			indexSearcher.search(q, filter1, collector);
+			final int negativeHits = collector.getTotalHits();
 
-		    def F1 = ClassifyQuery.f1(positiveHits, negativeHits,
+			def F1 = ClassifyQuery.f1(positiveHits, negativeHits,
 					totalDocs);
 
-			if (F1 > 0.02) {
-
-				//println "${text.utf8ToString()} word $word f1: $F1  positiveHits $positiveHits  neg hits $negativeHits"
-				
+			if (F1 > 0.05) {
 				wordMap += [(word): F1]
-				//println "wordmpa size " + wordMap.size()
-			}			
+			}
 		}
-		println wordMap
+
 		wordMap= wordMap.sort{a, b -> b.value <=> a.value}
-		
-		println "sorted wordMap $wordMap  and sorted wordMap $wordMap"
-		
-		def firstWord = wordMap.keySet().first()
-		
-		 Query sfqtest = new SpanFirstQuery(new SpanTermQuery(new Term(IndexInfoStaticG.FIELD_CONTENTS, firstWord )),
-			SPAN_FIRST_MAX_END);		
-		
-		TotalHitCountCollector collector  = new TotalHitCountCollector();
-		indexSearcher.search(sfqtest,  collector);
-		def n = collector.getTotalHits();
-		println "n is $n"
-		
+
 		List wordList = wordMap.keySet().toList().take(MAX_WORDLIST_SIZE)
-		println "list size is ${wordList.size()}  list is $wordList"		
-		
-		return wordList.toArray();		
+		println "map size: ${wordMap.size()}  List size is ${wordList.size()}  list is $wordList"
+
+		return wordList.toArray();
 	}
 }
-

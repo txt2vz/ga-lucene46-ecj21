@@ -28,15 +28,16 @@ public class GAClassifyMain extends Evolve {
 	private final String parameterFilePath =
 	// "C:\\Users\\Laurie\\Java\\classifyGA\\classifyGAN\\classify\\cfg\\classifyGASubpop.params";
 	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyGASubpop.params";
+	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyGAindGeneAndOrNot.params";
 	"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyGAindGene.params";
 	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyGA_SpanNear10.params";
-	// "C:\\Users\\Laurie\\JavaSource\\classifyGA\\classify\\cfg\\classifyGASubpop.params";
+
 
 	private Fitness bestOfAll = null;
 
 	private int totPosMatchedTest = 0, totTest = 0, totNegMatchTest = 0;
 
-	private final static int NUMBER_OF_CATEGORIES = 20, NUMBER_OF_JOBS = 1,
+	private final static int NUMBER_OF_CATEGORIES = 10, NUMBER_OF_JOBS = 1,
 			START_CAT = 0;;
 
 	private double microF1AllRunsTotal = 0, macroF1AllRunsTotal = 0,

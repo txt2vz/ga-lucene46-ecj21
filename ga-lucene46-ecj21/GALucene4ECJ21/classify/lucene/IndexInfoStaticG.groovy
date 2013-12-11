@@ -2,6 +2,7 @@ package lucene
 
 import java.io.File;
 import java.io.IOException;
+import query.*;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -44,21 +45,15 @@ import org.apache.lucene.util.Version;
 
 public class IndexInfoStaticG {
 
-	private final static String pathToIndex = //"D:\\indexes\\20newsgroups";
-	//   "D:\\indexes\\medical50";
-	//"C:\\indexes\\reuters10";
-	//"C:\\Users\\laurie\\Java\\indexes\\ind1";
-	//	"C:\\Users\\laurie\\Java\\indexes\\indexReuters10";
+	private final static String pathToIndex =
 
-	//"C:\\Users\\laurie\\Java\\indexes\\indexReuters10NoDup";
-	"C:\\Users\\laurie\\Java\\indexes\\index20News"
-	//"C:\\Users\\Laurie\\Java\\indexes\\indexOhsumed"
-	//"C:\\Users\\Laurie\\Java\\indexes\\reuters10pft"
-	//	"C:\\indexes\\20newsgroups";
+	"C:\\Users\\laurie\\Java\\indexes\\indexReuters10NoDup";
+	//"C:\\Users\\laurie\\Java\\indexes\\indexOhsumed"
+	//"C:\\Users\\laurie\\Java\\indexes\\index20News"
 
 	static IndexSearcher indexSearcher;
 
-	private static int categoryNumber = 2;
+	private static int categoryNumber = 13;
 
 	// Lucene field names
 	public static final String FIELD_CATEGORY = "category";
@@ -72,16 +67,14 @@ public class IndexInfoStaticG {
 
 	public static int totalTrainDocsInCat, totalTestDocsInCat, totalOthersTrainDocs;
 
-	private static final String train = "train", test = "test";
-
 	private static final TermQuery trainQ = new TermQuery(new Term(
-	IndexInfoStaticG.FIELD_TEST_TRAIN, train));
+	IndexInfoStaticG.FIELD_TEST_TRAIN, "train"));
 
 	private static final TermQuery testQ = new TermQuery(new Term(
-	IndexInfoStaticG.FIELD_TEST_TRAIN, test));
+	IndexInfoStaticG.FIELD_TEST_TRAIN, "test"));
 
 	static {
-		IndexReader reader = DirectoryReader.open(FSDirectory.open(new File(pathToIndex)));
+		final IndexReader reader = DirectoryReader.open(FSDirectory.open(new File(pathToIndex)));
 		println "in IndexInfoStaticG reader.numDocs: ${reader.numDocs()} "
 		indexSearcher = new IndexSearcher(reader);
 		setFilters()
@@ -102,10 +95,10 @@ public class IndexInfoStaticG {
 
 	private static void setFilters() throws IOException {
 
-		TermQuery catQ = new TermQuery(new Term(IndexInfoStaticG.FIELD_CATEGORY,
-				//	"02_crude"));
-				//	"C14"));
-				String.valueOf(categoryNumber)));
+		final TermQuery catQ = new TermQuery(new Term(IndexInfoStaticG.FIELD_CATEGORY,
+		//	"02_crude"));
+		//	"C14"));
+		String.valueOf(categoryNumber)));
 
 		catTrainBQ = new BooleanQuery(true);
 		othersTrainBQ = new BooleanQuery(true);
@@ -140,78 +133,107 @@ public class IndexInfoStaticG {
 		indexSearcher.search(trainQ, collector);
 		int totalTrain = collector.getTotalHits();
 
-		println " total train docs: $totalTrain"
-
-		println " total train in cat: $totalTrainDocsInCat total others tain: $totalOthersTrainDocs   total test in cat : $totalTestDocsInCat "
-
 		catTrainF = new CachingWrapperFilter(new QueryWrapperFilter(catTrainBQ));
 		othersTrainF = new CachingWrapperFilter(new QueryWrapperFilter(
-				othersTrainBQ));
+		othersTrainBQ));
 
 		catTestF = new CachingWrapperFilter(new QueryWrapperFilter(catTestBQ));
 		othersTestF = new CachingWrapperFilter(new QueryWrapperFilter(
-				othersTestBQ));
+		othersTestBQ));
 
 		trainF = new CachingWrapperFilter(new QueryWrapperFilter(trainQ));
 
-		println "total test in cat "
+		println "Total train docs: $totalTrain"
+		println "Total train in cat: $totalTrainDocsInCat  Total others tain: $totalOthersTrainDocs   Total test in cat : $totalTestDocsInCat  "
 	}
 
 	// just for testing
 	public static void main(String[] args) {
-		println "hello in  IndexInfoStaticG main"
 
 		int positiveMatch=0, negativeMatch=0;
 		IndexSearcher searcher = IndexInfoStaticG
-				.getIndexSearcher();
+		.getIndexSearcher();
 
 		println "setting filters"
 		IndexInfoStaticG.setFilters();
-		println "finished settinf F"
 
 		BooleanQuery query = new BooleanQuery(true);
 		SpanFirstQuery sfq = new SpanFirstQuery(new SpanTermQuery(new Term(
-				IndexInfoStaticG.FIELD_CONTENTS, "barrel")), 185);
+		IndexInfoStaticG.FIELD_CONTENTS, "angina")), 139);
 		query.add(sfq, BooleanClause.Occur.SHOULD);
 		sfq = new SpanFirstQuery(new SpanTermQuery(new Term(
-				IndexInfoStaticG.FIELD_CONTENTS, "barrels")), 205);
+		IndexInfoStaticG.FIELD_CONTENTS, "angioplasty")), 281);
 		query.add(sfq, BooleanClause.Occur.SHOULD);
 		sfq = new SpanFirstQuery(new SpanTermQuery(new Term(
-				IndexInfoStaticG.FIELD_CONTENTS, "crude")), 46);
+		IndexInfoStaticG.FIELD_CONTENTS, "antihypertensive")), 135);
+		query.add(sfq, BooleanClause.Occur.SHOULD);
+		sfq = new SpanFirstQuery(new SpanTermQuery(new Term(
+		IndexInfoStaticG.FIELD_CONTENTS, "aortic")), 84);
+		query.add(sfq, BooleanClause.Occur.SHOULD);
+		sfq = new SpanFirstQuery(new SpanTermQuery(new Term(
+		IndexInfoStaticG.FIELD_CONTENTS, "arteries")), 23);
+		query.add(sfq, BooleanClause.Occur.SHOULD);
+		sfq = new SpanFirstQuery(new SpanTermQuery(new Term(
+		IndexInfoStaticG.FIELD_CONTENTS, "cardiac")), 23);
+		query.add(sfq, BooleanClause.Occur.SHOULD);
+		sfq = new SpanFirstQuery(new SpanTermQuery(new Term(
+		IndexInfoStaticG.FIELD_CONTENTS, "coronary")), 266);
+		query.add(sfq, BooleanClause.Occur.SHOULD);
+		sfq = new SpanFirstQuery(new SpanTermQuery(new Term(
+		IndexInfoStaticG.FIELD_CONTENTS, "diastolic")), 95);
+		query.add(sfq, BooleanClause.Occur.SHOULD);
+		sfq = new SpanFirstQuery(new SpanTermQuery(new Term(
+		IndexInfoStaticG.FIELD_CONTENTS, "doppler")), 68);
+		query.add(sfq, BooleanClause.Occur.SHOULD);
+		sfq = new SpanFirstQuery(new SpanTermQuery(new Term(
+		IndexInfoStaticG.FIELD_CONTENTS, "echocardiography")), 291);
+		query.add(sfq, BooleanClause.Occur.SHOULD);
+		sfq = new SpanFirstQuery(new SpanTermQuery(new Term(
+		IndexInfoStaticG.FIELD_CONTENTS, "heart")), 19);
+		query.add(sfq, BooleanClause.Occur.SHOULD);
+		sfq = new SpanFirstQuery(new SpanTermQuery(new Term(
+		IndexInfoStaticG.FIELD_CONTENTS, "hypertension")), 32);
+		query.add(sfq, BooleanClause.Occur.SHOULD);
+		sfq = new SpanFirstQuery(new SpanTermQuery(new Term(
+		IndexInfoStaticG.FIELD_CONTENTS, "hypertensive")), 109);
+		query.add(sfq, BooleanClause.Occur.SHOULD);
+		sfq = new SpanFirstQuery(new SpanTermQuery(new Term(
+		IndexInfoStaticG.FIELD_CONTENTS, "ischemia")), 21);
+		query.add(sfq, BooleanClause.Occur.SHOULD);
+		sfq = new SpanFirstQuery(new SpanTermQuery(new Term(
+		IndexInfoStaticG.FIELD_CONTENTS, "myocardial")), 70);
+		query.add(sfq, BooleanClause.Occur.SHOULD);
+		sfq = new SpanFirstQuery(new SpanTermQuery(new Term(
+		IndexInfoStaticG.FIELD_CONTENTS, "valve")), 280);
 		query.add(sfq, BooleanClause.Occur.SHOULD);
 
-		try {
 
-			TopScoreDocCollector collector0 = TopScoreDocCollector.create(300, true);
-			searcher.search(query, IndexInfoStaticG.othersTestF, collector0);
-			ScoreDoc[] hits = collector0.topDocs().scoreDocs;
+		TopScoreDocCollector collector0 = TopScoreDocCollector.create(400, true);
+		searcher.search(query, IndexInfoStaticG.othersTestF, collector0);
+		ScoreDoc[] hits = collector0.topDocs().scoreDocs;
 
-			// 4. display results
-			println "Searching for: $query Found ${hits.length} hits:"
-			hits.each{
-				int docId = it.doc;
-				Document d = searcher.doc(docId);
-				println(d.get(IndexInfoStaticG.FIELD_TEST_TRAIN) + "\t" + d.get(IndexInfoStaticG.FIELD_PATH) + "\t" +
-						d.get(IndexInfoStaticG.FIELD_CATEGORY) );
-
-			}
-
-			TotalHitCountCollector collector = new TotalHitCountCollector();
-			searcher.search(query, IndexInfoStaticG.catTestF,
-					collector);
-			positiveMatch = collector.getTotalHits();
-
-
-			collector = new TotalHitCountCollector();
-			searcher.search(query, IndexInfoStaticG.othersTestF,
-					collector);
-			negativeMatch = collector.getTotalHits();
-
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		println "Searching for: $query Found ${hits.length} hits:"
+		hits.each{
+			int docId = it.doc;
+			Document d = searcher.doc(docId);
+			println(d.get(IndexInfoStaticG.FIELD_TEST_TRAIN) + "\t" + d.get(IndexInfoStaticG.FIELD_PATH) + "\t" +
+			d.get(IndexInfoStaticG.FIELD_CATEGORY) );
 		}
+
+		TotalHitCountCollector collector = new TotalHitCountCollector();
+		searcher.search(query, IndexInfoStaticG.catTestF,
+		collector);
+		positiveMatch = collector.getTotalHits();
+
+		collector = new TotalHitCountCollector();
+		searcher.search(query, IndexInfoStaticG.othersTestF,
+		collector);
+		negativeMatch = collector.getTotalHits();
+
+		println "Positive match test: $positiveMatch  Negative match test: $negativeMatch total in cat $totalTestDocsInCat"
+		
+		def f1 = ClassifyQuery.f1(positiveMatch, negativeMatch, IndexInfoStaticG.totalTestDocsInCat)
+		println "F1 $f1"
 	}
 }
 
