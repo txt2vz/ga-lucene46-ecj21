@@ -1,7 +1,7 @@
 parent.0		= simple.params
 #parent.0=classifyGAQ.params
 
-generations =	144
+generations =	14
 
 seed=time
 seed.0=time
@@ -28,7 +28,7 @@ pop.subpops = 2
 pop.default-subpop =0
 
 pop.subpop.0 = ec.Subpopulation
-pop.subpop.0.size = 512
+pop.subpop.0.size = 256
 pop.subpop.0.species = ec.vector.IntegerVectorSpecies
 pop.subpop.0.species.ind = ec.vector.IntegerVectorIndividual
 #pop.subpop.0.species.fitness = query.ClassifyORGA
@@ -48,7 +48,7 @@ pop.subpop.0.species.pipe.source.0.source.0	= ec.select.TournamentSelection
 pop.subpop.0.species.pipe.source.0.source.1	= ec.select.TournamentSelection
 
 pop.subpop.1 = ec.Subpopulation
-pop.subpop.1.size = 512
+pop.subpop.1.size = 128
 pop.subpop.1.duplicate-retries = 50
 
 pop.subpop.1.species = ec.vector.IntegerVectorSpecies
