@@ -19,7 +19,7 @@ class GAmainG extends Evolve {
 	private final boolean sf = true;
 
 	private final String parameterFilePath =
-	
+
 	"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyGASubpop.params";
 	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyGAindGeneAndOrNot.params";
 	//	"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyGAindGene.params";
@@ -27,7 +27,7 @@ class GAmainG extends Evolve {
 
 	private int totPosMatchedTest = 0, totTest = 0, totNegMatchTest = 0;
 
-	private final static int NUMBER_OF_CATEGORIES = 10, NUMBER_OF_JOBS = 1;
+	private final static int NUMBER_OF_CATEGORIES = 10, NUMBER_OF_JOBS = 2;
 
 	private double microF1AllRunsTotal = 0, macroF1AllRunsTotal = 0,
 	microBEPAllRunsTotal = 0;
@@ -69,20 +69,19 @@ class GAmainG extends Evolve {
 				state.run(EvolutionState.C_STARTED_FRESH);
 				def bestFitInAllSubPops=null;
 
-			/*	state.population.subpops.each { subp ->
-					Fitness bestFitInSubPop = subp.individuals[0].fitness;
-					
-					subp.individuals.each {indi ->
-						Fitness fit = indi.fitness
-						if (fit.betterThan(bestFitInSubPop))
-							bestFitInSubPop=fit;
-					}
-					if (bestFitInAllSubPops==null)
-						bestFitInAllSubPops=bestFitInSubPop
-					else if (bestFitInAllSubPops.betterThan(bestFitInSubPop))
-						bestFitInAllSubPops=bestFitInSubPop;
-				}
-				*/
+				/*	state.population.subpops.each { subp ->
+				 Fitness bestFitInSubPop = subp.individuals[0].fitness;
+				 subp.individuals.each {indi ->
+				 Fitness fit = indi.fitness
+				 if (fit.betterThan(bestFitInSubPop))
+				 bestFitInSubPop=fit;
+				 }
+				 if (bestFitInAllSubPops==null)
+				 bestFitInAllSubPops=bestFitInSubPop
+				 else if (bestFitInAllSubPops.betterThan(bestFitInSubPop))
+				 bestFitInAllSubPops=bestFitInSubPop;
+				 }
+				 */
 				for (int subPop = 0; subPop < state.population.subpops.length; ++subPop) {
 					Fitness bestFitOfSubPop = state.population.subpops[subPop].individuals[0].fitness;
 
@@ -99,8 +98,6 @@ class GAmainG extends Evolve {
 						bestFitInAllSubPops = bestFitOfSubPop;
 					}
 				}
-				
-				
 
 				final GAFit cfit = (GAFit) bestFitInAllSubPops;
 				final float testF1 = cfit.getF1Test();
@@ -123,8 +120,6 @@ class GAmainG extends Evolve {
 					System.out.println("OLd query " + spanFirstQueryMinimal);
 					System.out.println("New query " + cfit.getQueryMinimal());
 				}
-				
-				println "cat $cat trainF1: $trainF1 testF1: $testF1"
 
 				bestResultsOut.format(
 						"%s, %d, %.3f, %.3f, %.3f, %d, %d, %d, %s \n",
@@ -134,12 +129,10 @@ class GAmainG extends Evolve {
 						IndexInfoStaticG.totalTestDocsInCat,
 						cfit.getQueryMinimal());
 
-				
 				bestResultsOut.flush();
 				println "Test F1 for cat $cat : $testF1 *******************************"
 				cleanup(state);
 			}
-
 
 			final double microF1 = ClassifyQuery.f1(totPosMatchedTest,
 					totNegMatchTest, totTest);
