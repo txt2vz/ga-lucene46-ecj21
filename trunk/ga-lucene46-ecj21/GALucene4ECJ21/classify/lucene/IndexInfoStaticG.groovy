@@ -53,7 +53,8 @@ public class IndexInfoStaticG {
 
 	static IndexSearcher indexSearcher;
 
-	private static int categoryNumber = 13;
+	//private static int categoryNumber = 13;
+	private static String categoryNumber="3";
 
 	// Lucene field names
 	public static final String FIELD_CATEGORY = "category";
@@ -86,19 +87,23 @@ public class IndexInfoStaticG {
 	}
 
 	public static String getCatnumberAsString() {
+		//return categoryNumber;
 		return String.valueOf(categoryNumber);
 	}
 
-	public static int getCatNumber() {
-		return categoryNumber;
-	}
+//	public static int getCatNumber() {
+//		return categoryNumber;
+//	}
 
 	private static void setFilters() throws IOException {
 
 		final TermQuery catQ = new TermQuery(new Term(IndexInfoStaticG.FIELD_CATEGORY,
 		//	"02_crude"));
 		//	"C14"));
-		String.valueOf(categoryNumber)));
+		//String.valueOf(categoryNumber)
+			categoryNumber
+		
+		));
 
 		catTrainBQ = new BooleanQuery(true);
 		othersTrainBQ = new BooleanQuery(true);

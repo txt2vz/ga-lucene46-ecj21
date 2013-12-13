@@ -1,4 +1,4 @@
-package lucene;
+   package lucene;
 
 import org.apache.lucene.index.SlowCompositeReaderWrapper
 import org.apache.lucene.index.Term
