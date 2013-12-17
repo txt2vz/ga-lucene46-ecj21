@@ -1,19 +1,9 @@
 package query;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import lucene.IndexInfoStaticG;
 
 import org.apache.lucene.search.Query;
 
-import lucene.IndexInfoStaticG;
-
-import ec.EvolutionState;
 import ec.simple.SimpleFitness;
 
 /**
@@ -41,6 +31,10 @@ public class GAFit extends SimpleFitness {
 
 	public Query getQuery() {
 		return query;
+	}
+
+	public String getQueryMinimal() {
+		return QueryReadable.getQueryMinimal(query);
 	}
 
 	public void setTrainValues(int posMatchTrain, int negMatchTrain) {
@@ -101,20 +95,20 @@ public class GAFit extends SimpleFitness {
 	public int getNumberOfTerms() {
 		return numberOfTerms;
 	}
-	
-	public String fitnessToStringForHumans(){
+
+	public String fitnessToStringForHumans() {
 		return "F1train " + this.f1train;
 	}
 
-	//public void printFitnessForHumans(final EvolutionState state,
-	//		final int log, final int verbosity) {
-//
-	//	super.printFitnessForHumans(state, log, verbosity);
-	///	super.printFitnessForHumans(state, 0, verbosity);
-////
-	//	state.output.println(this.toString(state.generation), verbosity, log);
-	//	state.output.println(this.toString(state.generation), verbosity, 0);
-	//}
+	// public void printFitnessForHumans(final EvolutionState state,
+	// final int log, final int verbosity) {
+	//
+	// super.printFitnessForHumans(state, log, verbosity);
+	// / super.printFitnessForHumans(state, 0, verbosity);
+	// //
+	// state.output.println(this.toString(state.generation), verbosity, log);
+	// state.output.println(this.toString(state.generation), verbosity, 0);
+	// }
 
 	public String toString(int gen) {
 		return "Gen: " + gen + " F1: " + f1train + " Positive Match: "
