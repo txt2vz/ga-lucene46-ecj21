@@ -118,7 +118,7 @@ class GAmainG extends Evolve {
 							.replaceAll("spanFirst", "");
 
 				//	System.out.println("OLd query " + spanFirstQueryMinimal);
-				//	System.out.println("New query " + cfit.getQueryMinimal());
+					System.out.println("New query " + cfit.getQueryMinimal());
 				}
 
 				bestResultsOut.format(
@@ -127,8 +127,8 @@ class GAmainG extends Evolve {
 						cfit.getPositiveMatchTest(),
 						cfit.getNegativeMatchTest(),
 						IndexInfoStaticG.totalTestDocsInCat,
-						cfit.getQuery());
-						//cfit.getQueryMinimal());
+						//cfit.getQuery(),
+						cfit.getQueryMinimal());
 
 				bestResultsOut.flush();
 				println "Test F1 for cat $cat : $testF1 *******************************"

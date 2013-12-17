@@ -37,7 +37,6 @@ public class ClassifyGAStatistics extends SimpleStatistics {
 				bestFitOfPop = bestFitOfSubp;
 		}
 
-		//final GAFit cf = (GAFit) bestFitOfPop;
 		 final GAFit cf = (GAFit) bestFitOfPop;
 
 		// get test results on best individual
@@ -47,13 +46,10 @@ public class ClassifyGAStatistics extends SimpleStatistics {
 		
 			TotalHitCountCollector collector  = new TotalHitCountCollector();
 
-//			TopScoreDocCollector collector = TopScoreDocCollector.create(0,
-//					false);
 			searcher.search(cf.getQuery(), IndexInfoStaticG.catTestF,
 					collector);
 			final int positiveMatchTest = collector.getTotalHits();
 
-		//	collector = TopScoreDocCollector.create(0, false);
 			collector  = new TotalHitCountCollector();
 			searcher.search(cf.getQuery(),
 					IndexInfoStaticG.othersTestF, collector);
@@ -74,8 +70,11 @@ public class ClassifyGAStatistics extends SimpleStatistics {
 					+ negativeMatchTest + " Total test: "
 					+ IndexInfoStaticG.totalTestDocsInCat
 					+ " Total terms in query: " + cf.getNumberOfTerms()
-					+ " neutralHit " + cf.getNeutralHit() + '\n' + " Query "
-					+ cf.getQuery().toString(IndexInfoStaticG.FIELD_CONTENTS));
+					//+ " neutralHit " + cf.getNeutralHit() + '\n' + 
+					
+					 + " Query " + cf.getQuery().toString(IndexInfoStaticG.FIELD_CONTENTS) + '\n'
+					 + "Query min sorted: "  
+					 +  cf.getQueryMinimal());
 
 		} catch (IOException e) {
 
