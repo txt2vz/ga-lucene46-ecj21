@@ -130,8 +130,8 @@ public class GAClassifyMain extends Evolve {
 					final String spanFirstQueryMinimal = queryWithoutComma
 							.replaceAll("spanFirst", "");
 
-					System.out.println("OLd query " + spanFirstQueryMinimal);
-					System.out.println("New query " + cfit.getQueryMinimal());
+				//	System.out.println("OLd query " + spanFirstQueryMinimal);
+				//	System.out.println("New query " + cfit.getQueryMinimal());
 				}
 				bestResultsOut.format(
 						"%s, %d, %.3f, %.3f, %.3f, %d, %d, %d, %s \n",
@@ -139,7 +139,8 @@ public class GAClassifyMain extends Evolve {
 						cfit.getPositiveMatchTest(),
 						cfit.getNegativeMatchTest(),
 						IndexInfoStaticG.totalTestDocsInCat,
-						cfit.getQueryMinimal());
+					cfit.getQuery());
+						//cfit.getQueryMinimal());
 				// spanFirstQueryMinimal);
 
 				bestResultsOut.flush();

@@ -43,75 +43,6 @@ public class GAFit extends SimpleFitness {
 		return query;
 	}
 
-	public String getQueryMinimal() {
-		final String queryWithoutComma = query.toString(
-				IndexInfoStaticG.FIELD_CONTENTS).replaceAll(", ", "#~");
-
-		boolean spanF = queryWithoutComma.contains("spanFirst");
-
-		if (spanF) {
-
-			final String spanFirstQueryMinimal = queryWithoutComma.replaceAll(
-					"spanFirst", "");
-
-			// System.out.println("S " + spanFirstQueryMinimal);
-			String s = spanFirstQueryMinimal.replaceAll("\\(", "");
-
-			s = s.replaceAll("\\)", "#~");
-			String[] al = s.split("#~");
-
-			Map<String, Integer> spanFirstMap = new TreeMap<String, Integer>();
-
-			for (int x = 0; x < al.length; x = x + 2) {// (String s2: al){
-				// System.out.println("x " + x + " is " + al[x]);
-				if (spanFirstMap.containsKey(al[x])) {
-					System.err
-							.println("error in gasfq should not have duplicate term");
-
-					// final int end = spanFirstMap.get(word);
-					// spanFirstMap.put(word, Math.max(end,
-					// intVectorIndividual.genome[x + 1]));
-				} else if (al.length > x + 1)
-					spanFirstMap.put(al[x].trim(), Integer.parseInt(al[x + 1]));
-
-			}
-			// }
-			Map<String, Integer> r = sortByValue(spanFirstMap);
-			String sr = "";
-			for (String word : r.keySet()) {
-				sr = sr + "(" + word + " " + r.get(word) + ")";
-			}
-			//
-			// SpanFirstQuery sfq = new SpanFirstQuery(new SpanTermQuery(new
-			// Term(
-			// IndexWrapper.FIELD_CONTENTS, word)), intVectorIndividual.genome[x
-			// + 1]);
-			//
-			// query.add(sfq, BooleanClause.Occur.SHOULD);
-			// }
-
-			return sr;
-		} else
-			return queryWithoutComma;
-	}
-
-	static Map<String, Integer> sortByValue(Map<String, Integer> map) {
-		List list = new LinkedList(map.entrySet());
-		Collections.sort(list, new Comparator() {
-			public int compare(Object o1, Object o2) {
-				return ((Comparable) ((Map.Entry) (o1)).getValue())
-						.compareTo(((Map.Entry) (o2)).getValue());
-			}
-		});
-		// logger.info(list);
-		Map result = new LinkedHashMap();
-		for (Iterator it = list.iterator(); it.hasNext();) {
-			Map.Entry entry = (Map.Entry) it.next();
-			result.put(entry.getKey(), entry.getValue());
-		}
-		return result;
-	}
-
 	public void setTrainValues(int posMatchTrain, int negMatchTrain) {
 		positiveMatchTrain = posMatchTrain;
 		negativeMatchTrain = negMatchTrain;
@@ -170,16 +101,20 @@ public class GAFit extends SimpleFitness {
 	public int getNumberOfTerms() {
 		return numberOfTerms;
 	}
-
-	public void printFitnessForHumans(final EvolutionState state,
-			final int log, final int verbosity) {
-
-		super.printFitnessForHumans(state, log, verbosity);
-		super.printFitnessForHumans(state, 0, verbosity);
-
-		state.output.println(this.toString(state.generation), verbosity, log);
-		state.output.println(this.toString(state.generation), verbosity, 0);
+	
+	public String fitnessToStringForHumans(){
+		return "F1train " + this.f1train;
 	}
+
+	//public void printFitnessForHumans(final EvolutionState state,
+	//		final int log, final int verbosity) {
+//
+	//	super.printFitnessForHumans(state, log, verbosity);
+	///	super.printFitnessForHumans(state, 0, verbosity);
+////
+	//	state.output.println(this.toString(state.generation), verbosity, log);
+	//	state.output.println(this.toString(state.generation), verbosity, 0);
+	//}
 
 	public String toString(int gen) {
 		return "Gen: " + gen + " F1: " + f1train + " Positive Match: "

@@ -30,7 +30,7 @@ import ec.vector.IntegerVectorIndividual;
  * @author Laurie
  */
 
-public class ClassifySFGA extends Problem implements SimpleProblemForm {
+public class ClassifySFGAold extends Problem implements SimpleProblemForm {
 
 	private IndexSearcher searcher = IndexInfoStaticG
 			.getIndexSearcher();
@@ -74,11 +74,16 @@ public class ClassifySFGA extends Problem implements SimpleProblemForm {
 
 		IntegerVectorIndividual intVectorIndividual = (IntegerVectorIndividual) ind;
 
-	
+		// use sorted map to remove redundant elements and improve readability
+	 	Map<String, Integer> spanFirstMap = new TreeMap<String, Integer>();
+
+		// create query from Map
 		query = new BooleanQuery(true);
 
 		// read through vector 2 ints at at time. 1st int retrieves word, second
 		// specifies end for Lucene spanFirstQuery
+		// store results in Map after removing redundant queries (i.e. same word
+		// but lower end value)
 
 		for (int i = 0; i < (intVectorIndividual.genome.length - 1); i = i + 2) {
 
@@ -94,14 +99,26 @@ public class ClassifySFGA extends Problem implements SimpleProblemForm {
 				wordInd = intVectorIndividual.genome[i];
 
 			final String word = wordArray[wordInd];
+			// if (spanFirstMap.containsKey(word)) {
+			//
+			// final int end = spanFirstMap.get(word);
+			// spanFirstMap.put(word, Math.max(end,
+			// intVectorIndividual.genome[x + 1]));
+			// } else
+			spanFirstMap.put(word, intVectorIndividual.genome[i + 1]);
+			//
+		}
+
+		for (String word : spanFirstMap.keySet()) {
+
 			SpanFirstQuery sfq = new SpanFirstQuery(new SpanTermQuery(new Term(
 					IndexInfoStaticG.FIELD_CONTENTS, word)),
-					wordInd);
+					spanFirstMap.get(word));
 			query.add(sfq, BooleanClause.Occur.SHOULD);
-		}	
+		}
 
 
-		fitness.setNumberOfTerms(intVectorIndividual.genome.length/2);
+		fitness.setNumberOfTerms(spanFirstMap.size());
 
 		try {
 			TotalHitCountCollector collector = new TotalHitCountCollector();	
