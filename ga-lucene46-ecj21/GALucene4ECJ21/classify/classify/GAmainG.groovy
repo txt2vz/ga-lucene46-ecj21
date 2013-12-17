@@ -27,7 +27,7 @@ class GAmainG extends Evolve {
 
 	private int totPosMatchedTest = 0, totTest = 0, totNegMatchTest = 0;
 
-	private final static int NUMBER_OF_CATEGORIES = 10, NUMBER_OF_JOBS = 2;
+	private final static int NUMBER_OF_CATEGORIES = 10, NUMBER_OF_JOBS = 1;
 
 	private double microF1AllRunsTotal = 0, macroF1AllRunsTotal = 0,
 	microBEPAllRunsTotal = 0;
@@ -117,8 +117,8 @@ class GAmainG extends Evolve {
 					final String spanFirstQueryMinimal = queryWithoutComma
 							.replaceAll("spanFirst", "");
 
-					System.out.println("OLd query " + spanFirstQueryMinimal);
-					System.out.println("New query " + cfit.getQueryMinimal());
+				//	System.out.println("OLd query " + spanFirstQueryMinimal);
+				//	System.out.println("New query " + cfit.getQueryMinimal());
 				}
 
 				bestResultsOut.format(
@@ -127,7 +127,8 @@ class GAmainG extends Evolve {
 						cfit.getPositiveMatchTest(),
 						cfit.getNegativeMatchTest(),
 						IndexInfoStaticG.totalTestDocsInCat,
-						cfit.getQueryMinimal());
+						cfit.getQuery());
+						//cfit.getQueryMinimal());
 
 				bestResultsOut.flush();
 				println "Test F1 for cat $cat : $testF1 *******************************"
