@@ -96,7 +96,7 @@ public class ClassifySFGA extends Problem implements SimpleProblemForm {
 			final String word = wordArray[wordInd];
 			SpanFirstQuery sfq = new SpanFirstQuery(new SpanTermQuery(new Term(
 					IndexInfoStaticG.FIELD_CONTENTS, word)),
-					wordInd);
+					intVectorIndividual.genome[i+1]);
 			query.add(sfq, BooleanClause.Occur.SHOULD);
 		}	
 
