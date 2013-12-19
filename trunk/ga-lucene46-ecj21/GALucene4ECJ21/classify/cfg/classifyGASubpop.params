@@ -1,7 +1,7 @@
 parent.0		= simple.params
 #parent.0=classifyGAQ.params
 
-generations =	104
+generations =	114
 
 seed=time
 seed.0=time
@@ -28,7 +28,7 @@ pop.subpops = 2
 pop.default-subpop =0
 
 pop.subpop.0 = ec.Subpopulation
-pop.subpop.0.size = 256
+pop.subpop.0.size = 512 
 pop.subpop.0.species = ec.vector.IntegerVectorSpecies
 pop.subpop.0.species.ind = ec.vector.IntegerVectorIndividual
 #pop.subpop.0.species.fitness = query.ClassifyORGA
@@ -37,7 +37,7 @@ pop.subpop.0.species.fitness = query.GAFit
 
 pop.subpop.0.species.min-gene = -1
 pop.subpop.0.species.max-gene = 300
-pop.subpop.0.species.genome-size = 30
+pop.subpop.0.species.genome-size = 40
 pop.subpop.0.species.crossover-type	= two
 pop.subpop.0.species.crossover-prob	= 0.9
 pop.subpop.0.species.mutation-prob	= 0.05
@@ -59,7 +59,7 @@ pop.subpop.1.species.fitness = query.GAFit
 
 pop.subpop.1.species.min-gene = -1
 pop.subpop.1.species.max-gene = 300
-pop.subpop.1.species.genome-size = 30
+pop.subpop.1.species.genome-size = 40
 pop.subpop.1.species.crossover-type	= one
 pop.subpop.1.species.crossover-likelihood	= 0.7
 pop.subpop.1.species.mutation-prob	= 0.2
