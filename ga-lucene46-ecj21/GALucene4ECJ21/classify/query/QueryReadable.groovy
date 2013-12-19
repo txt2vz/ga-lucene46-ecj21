@@ -58,8 +58,6 @@ class QueryReadable {
 				sfshort += "("+ entry.key + " "+ entry.value + ")"
 			}
 
-			//	println "sfshort: + $sfshort"
-
 			return sfshort;
 		} else
 			return queryWithoutComma;

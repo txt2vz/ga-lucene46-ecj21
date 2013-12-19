@@ -27,7 +27,7 @@ class GAmainG extends Evolve {
 
 	private int totPosMatchedTest = 0, totTest = 0, totNegMatchTest = 0;
 
-	private final static int NUMBER_OF_CATEGORIES = 10, NUMBER_OF_JOBS = 1;
+	private final static int NUMBER_OF_CATEGORIES = 20, NUMBER_OF_JOBS = 1;
 
 	private double microF1AllRunsTotal = 0, macroF1AllRunsTotal = 0,
 	microBEPAllRunsTotal = 0;
