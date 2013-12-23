@@ -12,6 +12,7 @@ import org.apache.lucene.search.TotalHitCountCollector
 import org.apache.lucene.search.spans.SpanFirstQuery
 import org.apache.lucene.search.spans.SpanTermQuery
 import org.apache.lucene.util.BytesRef
+import wordTools.*
 import query.*;
 
 
@@ -27,12 +28,12 @@ import query.*;
 public class ImportantWords {
 
 	public static final int SPAN_FIRST_MAX_END = 300;
-	private final static int MAX_WORDLIST_SIZE = 200;
+	private final static int MAX_WORDLIST_SIZE = 100;
 
 	private final IndexSearcher indexSearcher = IndexInfoStaticG
 	.getIndexSearcher();
 
-	//private Set<String> stopSet;
+	private Set<String> stopSet = StopLists.getStopSet()
 
 	public static void main(String[] args){
 		def iw = new ImportantWords()
@@ -66,8 +67,8 @@ public class ImportantWords {
 
 			final Term t = new Term(IndexInfoStaticG.FIELD_CONTENTS, word);
 
-			if (indexSearcher.getIndexReader().docFreq(t) < 3)
-			//			|| stopSet.contains(t.text()))
+			if (indexSearcher.getIndexReader().docFreq(t) < 3
+						|| stopSet.contains(t.text()))
 			continue;
 
 			Query q;

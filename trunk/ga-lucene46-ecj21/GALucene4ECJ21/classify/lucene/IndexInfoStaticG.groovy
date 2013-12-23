@@ -91,10 +91,6 @@ public class IndexInfoStaticG {
 		return String.valueOf(categoryNumber);
 	}
 
-//	public static int getCatNumber() {
-//		return categoryNumber;
-//	}
-
 	private static void setFilters() throws IOException {
 
 		final TermQuery catQ = new TermQuery(new Term(IndexInfoStaticG.FIELD_CATEGORY,
@@ -163,6 +159,7 @@ public class IndexInfoStaticG {
 		IndexInfoStaticG.setFilters();
 
 		BooleanQuery query = new BooleanQuery(true);
+		query.setMinimumNumberShouldMatch(5);
 		SpanFirstQuery sfq = new SpanFirstQuery(new SpanTermQuery(new Term(
 		IndexInfoStaticG.FIELD_CONTENTS, "angina")), 139);
 		query.add(sfq, BooleanClause.Occur.SHOULD);
@@ -213,7 +210,7 @@ public class IndexInfoStaticG {
 		query.add(sfq, BooleanClause.Occur.SHOULD);
 
 
-		TopScoreDocCollector collector0 = TopScoreDocCollector.create(400, true);
+		TopScoreDocCollector collector0 = TopScoreDocCollector.create(200, true);
 		searcher.search(query, IndexInfoStaticG.othersTestF, collector0);
 		ScoreDoc[] hits = collector0.topDocs().scoreDocs;
 

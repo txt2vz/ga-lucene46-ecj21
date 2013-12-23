@@ -112,7 +112,7 @@ public class ClassifySpanNear10 extends Problem implements SimpleProblemForm {
 			SpanQuery snw1   = new SpanTermQuery(new Term(IndexInfoStaticG.FIELD_CONTENTS, spanNearMap.get(word)));			
 			
 			SpanQuery spanN =
-					   new SpanNearQuery(new SpanQuery[] {snw0,snw1}, WORD_DISTANCE, true);
+					   new SpanNearQuery(new SpanQuery[] {snw0,snw1}, WORD_DISTANCE, false);
 			
 			query.add(spanN, BooleanClause.Occur.SHOULD);
 		}

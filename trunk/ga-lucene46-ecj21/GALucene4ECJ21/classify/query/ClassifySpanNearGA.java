@@ -1,6 +1,8 @@
 package query;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.TreeMap;
 
 import lucene.ImportantWords;
 import lucene.IndexInfoStaticG;
@@ -9,8 +11,11 @@ import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TotalHitCountCollector;
+import org.apache.lucene.search.spans.SpanFirstQuery;
+import org.apache.lucene.search.spans.SpanNearQuery;
+import org.apache.lucene.search.spans.SpanQuery;
+import org.apache.lucene.search.spans.SpanTermQuery;
 
 import ec.EvolutionState;
 import ec.Individual;
@@ -27,7 +32,7 @@ import ec.vector.IntegerVectorIndividual;
  * @author Laurie
  */
 
-public class ClassifyORGA extends Problem implements SimpleProblemForm {
+public class ClassifySpanNearGA extends Problem implements SimpleProblemForm {
 
 	private IndexSearcher searcher = IndexInfoStaticG.getIndexSearcher();
 
@@ -37,11 +42,15 @@ public class ClassifyORGA extends Problem implements SimpleProblemForm {
 
 	private BooleanQuery query;
 
+	private final static int MAX_WORD_DISTANCE = 300;
+
 	public void setup(final EvolutionState state, final Parameter base) {
 
 		super.setup(state, base);
 
 		try {
+
+			ImportantWords importantWords = new ImportantWords();
 
 			System.out.println("Total docs for cat  "
 					+ IndexInfoStaticG.getCatnumberAsString() + " "
@@ -49,8 +58,9 @@ public class ClassifyORGA extends Problem implements SimpleProblemForm {
 					+ " Total test docs for cat "
 					+ IndexInfoStaticG.totalTestDocsInCat);
 
-			ImportantWords iw = new ImportantWords();
-			wordArray = iw.getF1WordList(false, true);
+			wordArray = importantWords.getF1WordList(false, true);
+
+			System.out.println();
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -68,29 +78,47 @@ public class ClassifyORGA extends Problem implements SimpleProblemForm {
 		IntegerVectorIndividual intVectorIndividual = (IntegerVectorIndividual) ind;
 
 		query = new BooleanQuery(true);
-		for (int i = 0; i < intVectorIndividual.genome.length; i++) {
+
+		// read through vector 3 ints at at time. 1st 2 ints retrieves words,
+		// third specifies end slop for spanNear
+		for (int i = 0; i < intVectorIndividual.genome.length; i = i + 3) {
+
+			int wordInd = 0;
 
 			if (intVectorIndividual.genome[i] < 0
-				|| intVectorIndividual.genome[i] >= wordArray.length)
+					|| intVectorIndividual.genome[i + 1] < 0
+					|| intVectorIndividual.genome[i] > wordArray.length
+					|| intVectorIndividual.genome[i + 1] > wordArray.length
+					|| intVectorIndividual.genome[i] == intVectorIndividual.genome[i + 1]
+					|| intVectorIndividual.genome[i + 2] > this.MAX_WORD_DISTANCE
+					|| intVectorIndividual.genome[i] == intVectorIndividual.genome[i + 2])
 				continue;
-				
-			int wordInd = intVectorIndividual.genome[i];
-			final String word = wordArray[wordInd];
 
-			query.add(new TermQuery(
-					new Term(IndexInfoStaticG.FIELD_CONTENTS, word)),
-					BooleanClause.Occur.SHOULD);
+			final String word0 = wordArray[intVectorIndividual.genome[i]];
+			final String word1 = wordArray[intVectorIndividual.genome[i + 1]];
+			final int wordDistance = intVectorIndividual.genome[i+2];
+	
+			SpanQuery snw0 = new SpanTermQuery(new Term(
+					IndexInfoStaticG.FIELD_CONTENTS, word0));
+			SpanQuery snw1 = new SpanTermQuery(new Term(
+					IndexInfoStaticG.FIELD_CONTENTS, word1));
+			
+
+			SpanQuery spanN = new SpanNearQuery(new SpanQuery[] { snw0, snw1 },
+					wordDistance, true);
+
+			query.add(spanN, BooleanClause.Occur.SHOULD);
 		}
+
+		fitness.setNumberOfTerms((intVectorIndividual.genome.length * 2)/3);
 
 		try {
 			TotalHitCountCollector collector = new TotalHitCountCollector();
-			searcher.search(query, IndexInfoStaticG.catTrainF,
-					collector);
+			searcher.search(query, IndexInfoStaticG.catTrainF, collector);
 			final int positiveMatch = collector.getTotalHits();
-
+			;
 			collector = new TotalHitCountCollector();
-			searcher.search(query, IndexInfoStaticG.othersTrainF,
-					collector);
+			searcher.search(query, IndexInfoStaticG.othersTrainF, collector);
 			final int negativeMatch = collector.getTotalHits();
 
 			F1train = ClassifyQuery.f1(positiveMatch, negativeMatch,

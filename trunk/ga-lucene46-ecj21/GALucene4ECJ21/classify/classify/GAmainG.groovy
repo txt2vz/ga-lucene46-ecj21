@@ -16,18 +16,20 @@ import ec.Fitness;
 
 class GAmainG extends Evolve {
 
-	private final boolean sf = true;
-
 	private final String parameterFilePath =
 
-	"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyGASubpop.params";
+	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyGASubpop.params";
 	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyGAindGeneAndOrNot.params";
 	//	"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyGAindGene.params";
+	"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifySFGA.params";
 	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyGA_SpanNear10.params";
+	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyORGA.params";
+	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyORGAminShould.params";
+	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifySpanNearGA.params";
 
 	private int totPosMatchedTest = 0, totTest = 0, totNegMatchTest = 0;
 
-	private final static int NUMBER_OF_CATEGORIES = 20, NUMBER_OF_JOBS = 1;
+	private final static int NUMBER_OF_CATEGORIES = 20 , NUMBER_OF_JOBS = 3;
 
 	private double microF1AllRunsTotal = 0, macroF1AllRunsTotal = 0,
 	microBEPAllRunsTotal = 0;
@@ -39,7 +41,6 @@ class GAmainG extends Evolve {
 
 		final String fileHead = "category, job, f1train, f1test, bepTest, totPositiveTest, totNegativeTest, totTestDocsInCat, query" + '\n';
 
-		//System.out.println(fileHead);
 		bestResultsOut.format("%s", fileHead);
 
 		ParameterDatabase parameters = null;
@@ -51,8 +52,7 @@ class GAmainG extends Evolve {
 
 			double macroF1 = 0;
 
-			for (cat in 0..(NUMBER_OF_CATEGORIES-1)){
-				//	for (cat in 2..3){
+			for (cat in 0..(NUMBER_OF_CATEGORIES-1)){			
 				IndexInfoStaticG.setCatNumber(cat)
 				state = initialize(parameters, job);
 
@@ -108,18 +108,8 @@ class GAmainG extends Evolve {
 				totPosMatchedTest += cfit.getPositiveMatchTest();
 				totNegMatchTest += cfit.getNegativeMatchTest();
 				totTest += IndexInfoStaticG.totalTestDocsInCat;
-
-				if (sf) {
-					final String queryWithoutComma = cfit.getQuery()
-							.toString(IndexInfoStaticG.FIELD_CONTENTS)
-							.replaceAll(",", " ");
-
-					final String spanFirstQueryMinimal = queryWithoutComma
-							.replaceAll("spanFirst", "");
-
-				//	System.out.println("OLd query " + spanFirstQueryMinimal);
-					System.out.println("New query " + cfit.getQueryMinimal());
-				}
+				
+				println "cfit.getQueryMinimal: ${cfit.getQueryMinimal()}"
 
 				bestResultsOut.format(
 						"%s, %d, %.3f, %.3f, %.3f, %d, %d, %d, %s \n",

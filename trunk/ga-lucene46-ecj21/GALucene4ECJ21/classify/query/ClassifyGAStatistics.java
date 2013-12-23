@@ -3,7 +3,11 @@ package query;
 import java.io.IOException;
 
 
+
+
+import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
 //import org.apache.lucene.search.Searcher;
 import org.apache.lucene.search.TopScoreDocCollector; //import org.apache.lucene.search.TopDocCollector;
 import org.apache.lucene.search.TotalHitCountCollector;
@@ -62,14 +66,18 @@ public class ClassifyGAStatistics extends SimpleStatistics {
 			
 			cf.setBEPTest(ClassifyQuery.bep(positiveMatchTest, negativeMatchTest,
 					IndexInfoStaticG.totalTestDocsInCat));
+			
+			BooleanQuery q = (BooleanQuery)cf.getQuery();
+					
 
-			System.out.println("F1Test: " + cf.getF1Test() + " F1Train: "
-					+ " bepTest " + cf.getBEPTest()
+			System.out.println("F1Test: " + cf.getF1Test() + " F1Train: " 
+			//		+ " bepTest " + cf.getBEPTest()
 					+ cf.getF1Train() + " positive match test: "
 					+ positiveMatchTest + " negative match test: "
 					+ negativeMatchTest + " Total test: "
 					+ IndexInfoStaticG.totalTestDocsInCat
 					+ " Total terms in query: " + cf.getNumberOfTerms()
+					+ " min should match " + q.getMinimumNumberShouldMatch()
 					//+ " neutralHit " + cf.getNeutralHit() + '\n' + 
 					
 					 + " Query " + cf.getQuery().toString(IndexInfoStaticG.FIELD_CONTENTS) + '\n'

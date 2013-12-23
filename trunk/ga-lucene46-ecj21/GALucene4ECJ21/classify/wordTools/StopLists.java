@@ -15,7 +15,7 @@ import java.util.TreeSet;
 
 public class StopLists {
 
-	public static Set<String> textFileToStopList() throws FileNotFoundException {
+	public static Set<String> getStopSet() throws FileNotFoundException {
 
 		final Set<String> stopSet = new TreeSet<String>();
 
@@ -23,7 +23,8 @@ public class StopLists {
 				new File(
 					//	C:\Users\laurie\Java\classifyGA\classifyGA\classify\cfg
 					//	"C:\\Users\\laurie\\Java\\classifyGA\\classifyGA\\classify\\cfg\\stop_words_moderate.txt"));
-		"C:\\Users\\Laurie\\Java\\classifyGAN\\classify\\cfg\\stop_words_moderate.txt"));
+						"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\stop_words_most.txt"));
+		//"C:\\Users\\Laurie\\Java\\classifyGAN\\classify\\cfg\\stop_words_moderate.txt"));
 
 		while (sc.hasNext()) {
 			stopSet.add(sc.next());
