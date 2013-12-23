@@ -20,14 +20,8 @@ import ec.simple.SimpleProblemForm;
 import ec.util.Parameter;
 import ec.vector.IntegerVectorIndividual;
 
-/**
- * To generate queries to perform binary text classification using GA string of
- * integer pairs which are translated into spanFirst queries
- * 
- * @author Laurie
- */
 
-public class ClassifyORGA extends Problem implements SimpleProblemForm {
+public class ClassifyORGAwithMinShould extends Problem implements SimpleProblemForm {
 
 	private IndexSearcher searcher = IndexInfoStaticG.getIndexSearcher();
 
@@ -73,7 +67,12 @@ public class ClassifyORGA extends Problem implements SimpleProblemForm {
 			if (intVectorIndividual.genome[i] < 0
 				|| intVectorIndividual.genome[i] >= wordArray.length)
 				continue;
-				
+					
+			if (i==0){
+				query.setMinimumNumberShouldMatch(intVectorIndividual.genome[i]);
+				continue;
+			}
+			
 			int wordInd = intVectorIndividual.genome[i];
 			final String word = wordArray[wordInd];
 
