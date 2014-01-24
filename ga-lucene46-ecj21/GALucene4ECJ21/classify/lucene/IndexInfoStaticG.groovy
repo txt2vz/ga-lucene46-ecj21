@@ -46,7 +46,7 @@ import org.apache.lucene.util.Version;
 public class IndexInfoStaticG {
 
 	private final static String pathToIndex =
-
+//	"C:\\Users\\laurie\\Java\\indexes\\index20News10B"
 	//"C:\\Users\\laurie\\Java\\indexes\\indexReuters10NoDup";
 	//"C:\\Users\\laurie\\Java\\indexes\\indexOhsumed"
 	"C:\\Users\\laurie\\Java\\indexes\\index20News"
@@ -145,7 +145,7 @@ public class IndexInfoStaticG {
 		trainF = new CachingWrapperFilter(new QueryWrapperFilter(trainQ));
 
 		println "Total train docs: $totalTrain"
-		println "Total train in cat: $totalTrainDocsInCat  Total others tain: $totalOthersTrainDocs   Total test in cat : $totalTestDocsInCat  "
+		println "CategoryNumber $categoryNumber Total train in cat: $totalTrainDocsInCat  Total others tain: $totalOthersTrainDocs   Total test in cat : $totalTestDocsInCat  "
 	}
 
 	// just for testing

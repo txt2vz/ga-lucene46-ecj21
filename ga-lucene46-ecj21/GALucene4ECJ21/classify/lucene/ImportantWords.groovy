@@ -28,7 +28,7 @@ import query.*;
 public class ImportantWords {
 
 	public static final int SPAN_FIRST_MAX_END = 300;
-	private final static int MAX_WORDLIST_SIZE = 100;
+	private final static int MAX_WORDLIST_SIZE = 300;
 
 	private final IndexSearcher indexSearcher = IndexInfoStaticG
 	.getIndexSearcher();
@@ -66,11 +66,23 @@ public class ImportantWords {
 			def word = text.utf8ToString()
 
 			final Term t = new Term(IndexInfoStaticG.FIELD_CONTENTS, word);
+			
+		//	println "word: $word t.text " + t.text()
 
-			if (indexSearcher.getIndexReader().docFreq(t) < 3
-						|| stopSet.contains(t.text()))
+			if (word=="") continue
+			
+			char c = word.charAt(0)
+			
+			if (indexSearcher.getIndexReader().docFreq(t) < 3 
+			     //|| StopSet.stopSet.contains(t.text())
+				 || stopSet.contains(t.text())
+				  ||t.text().contains("'")
+				 ||!c.isLetter())
+						//|| stopSet.contains(t.text()))
 			continue;
 
+			
+			//println " word after:    $word"
 			Query q;
 			if (spanFirstQ){
 				q = new SpanFirstQuery(new SpanTermQuery(t),
@@ -105,7 +117,7 @@ public class ImportantWords {
 			def F1 = ClassifyQuery.f1(positiveHits, negativeHits,
 					totalDocs);
 
-			if (F1 > 0.05) {
+			if (F1 > 0.02) {
 				wordMap += [(word): F1]
 			}
 		}

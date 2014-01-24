@@ -21,8 +21,13 @@ class GAmainG extends Evolve {
 	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyGASubpop.params";
 	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyGAindGeneAndOrNot.params";
 	//	"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyGAindGene.params";
-	"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifySFGA.params";
+	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifySFGA.params";
+	
+	"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifySFGAv2.params";
+	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifySFGAsubpop.params";
+	
 	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyGA_SpanNear10.params";
+	
 	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyORGA.params";
 	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyORGAminShould.params";
 	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifySpanNearGA.params";
@@ -52,7 +57,7 @@ class GAmainG extends Evolve {
 
 			double macroF1 = 0;
 
-			for (cat in 0..(NUMBER_OF_CATEGORIES-1)){			
+			for (cat in 0..(NUMBER_OF_CATEGORIES-1)){
 				IndexInfoStaticG.setCatNumber(cat)
 				state = initialize(parameters, job);
 
@@ -108,7 +113,7 @@ class GAmainG extends Evolve {
 				totPosMatchedTest += cfit.getPositiveMatchTest();
 				totNegMatchTest += cfit.getNegativeMatchTest();
 				totTest += IndexInfoStaticG.totalTestDocsInCat;
-				
+
 				println "cfit.getQueryMinimal: ${cfit.getQueryMinimal()}"
 
 				bestResultsOut.format(
@@ -131,15 +136,20 @@ class GAmainG extends Evolve {
 					totNegMatchTest, totTest);
 
 			macroF1 = macroF1 / NUMBER_OF_CATEGORIES;
-			println "OVERALL: micro f1:  $microF1  macroF1: $macroF1";
+			println "OVERALL: micro f1:  $microF1  macroF1: $macroF1 microBEP: $microBEP";
 
 			bestResultsOut.format(" \n");
 			bestResultsOut.format("Run Number, %d", job);
+			//	bestResultsOut
+			//			.format(", Micro F1: , %.4f, Micro bep: , %.4f, Macro F1: , %.4f,  Total Positive Matches , %d, Total Negative Matches, %d, Total Docs,  %d \n",
+			//		microF1, microBEP, macroF1, totPosMatchedTest,
+			//		totNegMatchTest, totTest);
 			bestResultsOut
-					.format(", Micro F1: , %.4f, Micro bep: , %.4f, Macro F1: , %.4f,  Total Positive Matches , %d, Total Negative Matches, %d, Total Docs,  %d \n",
-					microF1, microBEP, macroF1, totPosMatchedTest,
+					.format(", Micro F1: , %.4f,  Macro F1: , %.4f, Micro BEP:, %.4f, Total Positive Matches , %d, Total Negative Matches, %d, Total Docs,  %d \n",
+					microF1, macroF1, microBEP, totPosMatchedTest,
 					totNegMatchTest, totTest);
 
+				
 			macroF1AllRunsTotal = macroF1AllRunsTotal + macroF1;
 			microF1AllRunsTotal = microF1AllRunsTotal + microF1;
 			microBEPAllRunsTotal = microBEPAllRunsTotal + microBEP;
@@ -147,10 +157,16 @@ class GAmainG extends Evolve {
 			final double microAverageF1AllRuns = microF1AllRunsTotal / (job);
 			final double microAverageBEPAllRuns = microBEPAllRunsTotal / (job);
 			final double macroAverageF1AllRuns = macroF1AllRunsTotal / (job);
+			//	bestResultsOut
+			//			.format(",, Overall Micro F1 , %.4f, Overall Micro BEP , %.4f, Overall Macro F1, %.4f",
+			//			microAverageF1AllRuns, microAverageBEPAllRuns,
+			//		macroAverageF1AllRuns);
+
 			bestResultsOut
-					.format(",, Overall Micro F1 , %.4f, Overall Micro BEP , %.4f, Overall Macro F1, %.4f",
-					microAverageF1AllRuns, microAverageBEPAllRuns,
-					macroAverageF1AllRuns);
+					.format(",, Overall Micro F1 , %.4f,  Overall Macro F1, %.4f, Overall MicroBEP, %.4f",
+					microAverageF1AllRuns,
+					macroAverageF1AllRuns,
+					microAverageBEPAllRuns);
 
 			totPosMatchedTest = 0;
 			totNegMatchTest = 0;

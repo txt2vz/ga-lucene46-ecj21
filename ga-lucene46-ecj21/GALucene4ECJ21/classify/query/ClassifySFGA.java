@@ -74,15 +74,16 @@ public class ClassifySFGA extends Problem implements SimpleProblemForm {
 		IntegerVectorIndividual intVectorIndividual = (IntegerVectorIndividual) ind;
 
 		query = new BooleanQuery(true);
+//		query.setMinimumNumberShouldMatch(2);
 
 		// read through vector 2 ints at at time. 1st int retrieves word, second
 		// specifies end for Lucene spanFirstQuery
 		for (int i = 0; i < intVectorIndividual.genome.length; i = i + 2) {
 
 			if (intVectorIndividual.genome[i] < 0
-					|| intVectorIndividual.genome[i + 1] < 0
+					|| intVectorIndividual.genome[i + 1] < 0  
 					|| intVectorIndividual.genome[i] >= wordArray.length
-					|| intVectorIndividual.genome[i + 1] >= wordArray.length)
+					|| intVectorIndividual.genome[i + 1] >= ImportantWords.SPAN_FIRST_MAX_END)
 				continue;
 
 			int wordInd = intVectorIndividual.genome[i];
