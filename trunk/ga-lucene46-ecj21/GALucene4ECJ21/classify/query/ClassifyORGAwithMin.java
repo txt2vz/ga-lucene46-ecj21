@@ -27,7 +27,7 @@ import ec.vector.IntegerVectorIndividual;
  * @author Laurie
  */
 
-public class ClassifyORGA extends Problem implements SimpleProblemForm {
+public class ClassifyORGAwithMin extends Problem implements SimpleProblemForm {
 
 	private IndexSearcher searcher = IndexInfoStaticG.getIndexSearcher();
 
@@ -68,30 +68,36 @@ public class ClassifyORGA extends Problem implements SimpleProblemForm {
 		IntegerVectorIndividual intVectorIndividual = (IntegerVectorIndividual) ind;
 
 		query = new BooleanQuery(true);
-		//query.setMinimumNumberShouldMatch(2);
+		BooleanQuery queryMin = new BooleanQuery(true);
+		queryMin.setMinimumNumberShouldMatch(2);
 		for (int i = 0; i < intVectorIndividual.genome.length; i++) {
 
 			if (intVectorIndividual.genome[i] < 0
-				|| intVectorIndividual.genome[i] >= wordArray.length)
+					|| intVectorIndividual.genome[i] >= wordArray.length)
 				continue;
-				
+
 			int wordInd = intVectorIndividual.genome[i];
 			final String word = wordArray[wordInd];
+			if (i < 50) {
+				queryMin.add(new TermQuery(new Term(
+						IndexInfoStaticG.FIELD_CONTENTS, word)),
+						BooleanClause.Occur.SHOULD);
+			} else if (i == 50)
+				query.add(queryMin, BooleanClause.Occur.SHOULD);
+			else
 
-			query.add(new TermQuery(
-					new Term(IndexInfoStaticG.FIELD_CONTENTS, word)),
-					BooleanClause.Occur.SHOULD);
+				query.add(new TermQuery(new Term(
+						IndexInfoStaticG.FIELD_CONTENTS, word)),
+						BooleanClause.Occur.SHOULD);
 		}
 
 		try {
 			TotalHitCountCollector collector = new TotalHitCountCollector();
-			searcher.search(query, IndexInfoStaticG.catTrainF,
-					collector);
+			searcher.search(query, IndexInfoStaticG.catTrainF, collector);
 			final int positiveMatch = collector.getTotalHits();
 
 			collector = new TotalHitCountCollector();
-			searcher.search(query, IndexInfoStaticG.othersTrainF,
-					collector);
+			searcher.search(query, IndexInfoStaticG.othersTrainF, collector);
 			final int negativeMatch = collector.getTotalHits();
 
 			F1train = ClassifyQuery.f1(positiveMatch, negativeMatch,

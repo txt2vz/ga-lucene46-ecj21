@@ -3,6 +3,7 @@ package lucene
 import java.io.File;
 import java.io.IOException;
 import org.apache.lucene.analysis.Analyzer
+import org.apache.lucene.analysis.en.EnglishAnalyzer
 import org.apache.lucene.analysis.standard.StandardAnalyzer
 import org.apache.lucene.document.Document
 import org.apache.lucene.document.Field
@@ -23,7 +24,7 @@ import org.apache.lucene.util.Version
 
 import org.apache.lucene.index.IndexWriter;
 
-class Index20News {
+class Index20NewsB {
 	def indexPath =  "C:\\Users\\laurie\\Java\\indexes\\index20News10B"
 	//"C:\\Users\\laurie\\Java\\indexes\\index20News"
 
@@ -36,7 +37,7 @@ class Index20News {
 	def docsCatMap=[:]
 
 	static main(args) {
-		def p = new Index20News()
+		def p = new Index20NewsB()
 		p.setup()
 	}
 
@@ -46,8 +47,9 @@ class Index20News {
 		println("Indexing to directory '" + indexPath + "'...");
 
 		Directory dir = FSDirectory.open(new File(indexPath));
-		Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_46);
-		IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_46, analyzer);
+		EnglishAnalyzer en_an = new EnglishAnalyzer(Version.LUCENE_46);
+		//Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_46);
+		IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_46, en_an);//   analyzer);
 
 		//Codec c  = new DirectPostingsFormat();
 		// Create a new index in the directory, removing any
@@ -65,43 +67,24 @@ class Index20News {
 		IndexWriter writer = new IndexWriter(dir, iwc);  
 		
 		def z=0
-		
+	  
+
 		new File(docsPath).eachDir {
 			def catNumber=0;
 			it .eachDir {
 
 				it.eachFileRecurse {
-					if (!it.hidden && it.exists() && it.canRead() && !it.directory)  {
+					if (!it.hidden && it.exists() && it.canRead() && !it.directory && !docsCatMap.containsKey(it.name)) {					
+							
+							
+							docsCatMap.put(it.name, catNumber)
 
-						if (docsCatMap.containsKey(it.name)) { 
-						println(" yoooooo " + it.name)
-						z++
-						}
-						
-						
-						docsCatMap.put(it.name, catNumber)
+						indexDocs(writer,it, catNumber)
 					}
 				}
-				println("z is $z")
 				catNumber++;
 			}
 		}
-		
-	    
-
-//		new File(docsPath).eachDir {
-//			def catNumber=0;
-//			it .eachDir {
-//
-//				it.eachFileRecurse {
-//					if (!it.hidden && it.exists() && it.canRead() && !it.directory)  {
-//
-//						indexDocs(writer,it, catNumber)
-//					}
-//				}
-//				catNumber++;
-//			}
-//		}
 
 		Date end = new Date();
 		println(end.getTime() - start.getTime() + " total milliseconds");
@@ -111,7 +94,7 @@ class Index20News {
 		//String querystr2 =  "08_trade";
 		// the "title" arg specifies the default field to use
 		// when no field is explicitly specified in the query.
-		Query q = new QueryParser(Version.LUCENE_46, IndexInfoStaticG.FIELD_CONTENTS, analyzer).parse(querystr);
+		Query q = new QueryParser(Version.LUCENE_46, IndexInfoStaticG.FIELD_CONTENTS, en_an).parse(querystr);
 		//Query q = new QueryParser(Version.LUCENE_46, IndexWrapperG.FIELD_CATEGORY, analyzer).parse(querystr);
 
 		// 3. search
