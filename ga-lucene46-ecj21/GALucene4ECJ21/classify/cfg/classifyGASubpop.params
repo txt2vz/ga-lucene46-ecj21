@@ -14,9 +14,9 @@ seed.3=time
 evalthreads = 				4
 breedthreads = 				4
 
-eval.problem = query.ClassifySFGA
+#eval.problem = query.ClassifySFGA
 #eval.problem = query.ClassifyORGA
-#eval.problem = query.ClassifyANDGA
+eval.problem = query.ClassifyANDGA
 #eval.problem = query.ClassifyANDORGA
 stat = query.ClassifyGAStatistics
 stat.file = statDump/out.stat

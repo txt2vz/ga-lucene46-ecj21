@@ -73,10 +73,7 @@ public class ClassifyANDGA extends Problem implements SimpleProblemForm {
 		for (int i = 0; i < (intVectorIndividual.genome.length - 1); i = i + 1) {
 
 			// any ints below 0 are ignored
-			if (intVectorIndividual.genome[i] < 0)
-				continue; 
-
-			int wordInd = 0;
+			int wordInd;
 			if (intVectorIndividual.genome[i] >= wordArray.length
 					|| intVectorIndividual.genome[i] < 0)
 				wordInd = 0;
@@ -92,13 +89,10 @@ public class ClassifyANDGA extends Problem implements SimpleProblemForm {
 
 		try {
 			TotalHitCountCollector collector = new TotalHitCountCollector();
-			// TopScoreDocCollector collector = TopScoreDocCollector.create(0,
-			// false);
 			searcher.search(query, IndexInfoStaticG.catTrainF,
 					collector);
 			final int positiveMatch = collector.getTotalHits();
 
-			// collector = TopScoreDocCollector.create(0, false);
 			collector = new TotalHitCountCollector();
 			searcher.search(query, IndexInfoStaticG.othersTrainF,
 					collector);

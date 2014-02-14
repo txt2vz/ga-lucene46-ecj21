@@ -17,13 +17,14 @@ import ec.Fitness;
 class GAmainG extends Evolve {
 
 	private final String parameterFilePath =
+	"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyGA1.params";
 
 	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyGASubpop.params";
 	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyGAindGeneAndOrNot.params";
 	//	"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyGAindGene.params";
 	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifySFGA.params";
 	
-	"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifySFGAv2.params";
+	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifySFGAv2.params";
 	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifySFGAsubpop.params";
 	
 	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyGA_SpanNear10.params";
@@ -34,7 +35,7 @@ class GAmainG extends Evolve {
 
 	private int totPosMatchedTest = 0, totTest = 0, totNegMatchTest = 0;
 
-	private final static int NUMBER_OF_CATEGORIES = 20 , NUMBER_OF_JOBS = 3;
+	private final static int NUMBER_OF_CATEGORIES = 4 , NUMBER_OF_JOBS = 2;
 
 	private double microF1AllRunsTotal = 0, macroF1AllRunsTotal = 0,
 	microBEPAllRunsTotal = 0;

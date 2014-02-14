@@ -32,7 +32,7 @@ pop.subpop.0.species.fitness = query.GAFit
 
 pop.subpop.0.species.min-gene = -1
 pop.subpop.0.species.max-gene = 300
-pop.subpop.0.species.genome-size = 80
+pop.subpop.0.species.genome-size = 30
 pop.subpop.0.species.crossover-type	= two
 
 pop.subpop.0.species.crossover-likelihood	= 0.7
@@ -61,7 +61,7 @@ pop.subpop.1.species.fitness = query.GAFit
 
 pop.subpop.1.species.min-gene = -1
 pop.subpop.1.species.max-gene = 300
-pop.subpop.1.species.genome-size = 80
+pop.subpop.1.species.genome-size = 30
 pop.subpop.1.species.crossover-type	= one
 pop.subpop.1.species.crossover-likelihood	= 0.8
 pop.subpop.1.species.mutation-prob	= 0.1
