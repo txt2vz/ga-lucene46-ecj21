@@ -24,20 +24,21 @@ import org.apache.lucene.util.Version
 
 import org.apache.lucene.index.IndexWriter;
 
-class Index20NewsB {
-	def indexPath =  "C:\\Users\\laurie\\Java\\indexes\\index20News10B"
+class IndexWebKB {
+	def indexPath =  "C:\\Users\\laurie\\Java\\indexes\\index2WebKB"
 	//"C:\\Users\\laurie\\Java\\indexes\\index20News"
 
 	// Create Lucene index in this directory
 	//def docsPath =  "C:\\Users\\laurie\\Dataset\\reuters-top10\\08_trade" // Index files in this directory
-	def docsPath = "C:\\Users\\Laurie\\Dataset\\20NGb10"
+	def docsPath = "C:\\Users\\Laurie\\Dataset\\webkb"
 	//"C:\\Users\\Laurie\\Dataset\\20bydate"
 
 	//"C:\\Users\\laurie\\Dataset\\reuters-top10" // Index files in this directory
 	def docsCatMap=[:]
+	def z=0
 
 	static main(args) {
-		def p = new Index20NewsB()
+		def p = new IndexWebKB()
 		p.setup()
 	}
 
@@ -64,13 +65,10 @@ class Index20NewsB {
 		//
 		iwc.setRAMBufferSizeMB(512.0);
 
-		IndexWriter writer = new IndexWriter(dir, iwc);  
-		
-		def z=0
-	  
-
+		IndexWriter writer = new IndexWriter(dir, iwc);  	  
+		def catNumber=0;
 		new File(docsPath).eachDir {
-			def catNumber=0;
+	
 			it .eachDir {
 
 				it.eachFileRecurse {
@@ -80,9 +78,9 @@ class Index20NewsB {
 
 						indexDocs(writer,it, catNumber)
 					}
-				}
-				catNumber++;
+				}				
 			}
+			catNumber++;
 		}
 
 		Date end = new Date();
@@ -149,13 +147,14 @@ class Index20NewsB {
 		doc.add(new TextField(IndexInfoStaticG.FIELD_CONTENTS, new BufferedReader(new InputStreamReader(fis, "UTF-8"))) );
 
 
-
 		Field categoryField = new StringField(IndexInfoStaticG.FIELD_CATEGORY, categoryNumber.toString(), Field.Store.YES);
 		doc.add(categoryField)
 
-
+        z++;
+		
 		String test_train
-		if ( f.canonicalPath.contains("test")) test_train="test" else test_train="train";
+		//if ( f.canonicalPath.contains("test")) test_train="test" else test_train="train";
+		if (z%4==0)test_train="test" else test_train="train";
 		Field ttField = new StringField(IndexInfoStaticG.FIELD_TEST_TRAIN, test_train, Field.Store.YES)
 		doc.add(ttField)
 		
