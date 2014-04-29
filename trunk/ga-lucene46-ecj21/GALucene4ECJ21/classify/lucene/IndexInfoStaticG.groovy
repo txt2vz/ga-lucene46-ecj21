@@ -48,10 +48,10 @@ public class IndexInfoStaticG {
 
 	private final static String pathToIndex =
 	//	"C:\\Users\\laurie\\Java\\indexes\\index20News10B"
-	//"C:\\Users\\laurie\\Java\\indexes\\indexReuters10NoDup";
+	"C:\\Users\\laurie\\Java\\indexes\\indexReuters10NoDup";
 	//"C:\\Users\\laurie\\Java\\indexes\\indexOhsumed"
 	//"C:\\Users\\laurie\\Java\\indexes\\index20News"
-	"C:\\Users\\laurie\\Java\\indexes\\index2WebKB"
+	//"C:\\Users\\laurie\\Java\\indexes\\index2WebKB"
 	static IndexSearcher indexSearcher;
 
 	//private static int categoryNumber = 13;
