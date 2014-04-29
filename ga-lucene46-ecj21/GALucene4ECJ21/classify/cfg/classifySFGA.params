@@ -1,6 +1,6 @@
 parent.0		= simple.params
 
-generations =	200           
+generations =	100           
 
 seed=time
 seed.0=time
@@ -58,7 +58,7 @@ pop.subpop.0.species.max-gene = 300
 #pop.subpop.0.species.min-gene.20 = -1
 #pop.subpop.0.species.max-gene.20 = 100 
 
-pop.subpop.0.species.genome-size = 30
+pop.subpop.0.species.genome-size = 6
 pop.subpop.0.species.crossover-type	= two
 
 pop.subpop.0.species.crossover-likelihood	= 0.7

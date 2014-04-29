@@ -67,7 +67,6 @@ public class ClassifyANDORGAv2 extends Problem implements SimpleProblemForm {
 
 		IntegerVectorIndividual intVectorIndividual = (IntegerVectorIndividual) ind;
 
-		// create query from Map
 		query = new BooleanQuery(true);
 		int wordInd0, wordInd1;
 		
@@ -102,7 +101,6 @@ public class ClassifyANDORGAv2 extends Problem implements SimpleProblemForm {
 			searcher.search(query, IndexInfoStaticG.catTrainF, collector);
 			final int positiveMatch = collector.getTotalHits();
 
-			// collector = TopScoreDocCollector.create(0, false);
 			collector = new TotalHitCountCollector();
 			searcher.search(query, IndexInfoStaticG.othersTrainF, collector);
 			final int negativeMatch = collector.getTotalHits();

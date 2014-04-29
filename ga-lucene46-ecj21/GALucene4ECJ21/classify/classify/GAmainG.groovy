@@ -18,7 +18,7 @@ class GAmainG extends Evolve {
 
 	private final String parameterFilePath =
 	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyGA1.params";
-	"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyANDORGAv2.params";
+	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyANDORGAv2.params";
 
 	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyGASubpop.params";
 	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyGAindGeneAndOrNot.params";
@@ -30,13 +30,13 @@ class GAmainG extends Evolve {
 	
 	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyGA_SpanNear10.params";
 	
-	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyORGA.params";
+	"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyORGA.params";
 	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifyORGAminShould.params";
 	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\classifySpanNearGA.params";
 
 	private int totPosMatchedTest = 0, totTest = 0, totNegMatchTest = 0;
 
-	private final static int NUMBER_OF_CATEGORIES = 4 , NUMBER_OF_JOBS = 2;
+	private final static int NUMBER_OF_CATEGORIES = 10 , NUMBER_OF_JOBS = 1;
 
 	private double microF1AllRunsTotal = 0, macroF1AllRunsTotal = 0,
 	microBEPAllRunsTotal = 0;
@@ -59,7 +59,7 @@ class GAmainG extends Evolve {
 
 			double macroF1 = 0;
 
-			for (cat in 0..(NUMBER_OF_CATEGORIES-1)){
+			for (cat in 0..<NUMBER_OF_CATEGORIES){
 				IndexInfoStaticG.setCatNumber(cat)
 				state = initialize(parameters, job);
 
