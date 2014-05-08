@@ -23,7 +23,7 @@ import org.apache.lucene.util.Version
 
 import org.apache.lucene.index.IndexWriter;
 
-class Index20News {
+class Index20News10catsOld {
 	def indexPath =  "C:\\Users\\laurie\\Java\\indexes\\index20News10B"
 	//"C:\\Users\\laurie\\Java\\indexes\\index20News"
 
@@ -36,7 +36,7 @@ class Index20News {
 	def docsCatMap=[:]
 
 	static main(args) {
-		def p = new Index20News()
+		def p = new Index20News10catsOld()
 		p.setup()
 	}
 

@@ -21,6 +21,11 @@ Formatter bestResultsOut = new Formatter("resultsOR.csv");
 final String fileHead = "category, f1train, f1test, cat" + '\n';
 bestResultsOut.format("%s", fileHead);
 
+def micro=0
+def totalpos=0
+def totalneg=0
+def totaltest=0
+
 for (cat in 0..9){
 	IndexInfoStaticG.setCatNumber(cat)
 
@@ -40,7 +45,7 @@ for (cat in 0..9){
 
 	println "word is ${wordArray[0]}"
 
-	(0..2).each{
+	(0..4).each{
 
 		query.add(new TermQuery(
 				new Term(IndexInfoStaticG.FIELD_CONTENTS,  wordArray[it])),
@@ -63,13 +68,18 @@ for (cat in 0..9){
 	collector = new TotalHitCountCollector();
 	searcher.search(query, IndexInfoStaticG.catTestF, collector);
 	positiveMatch = collector.getTotalHits();
-
+	
 	collector = new TotalHitCountCollector();
 	searcher.search(query, IndexInfoStaticG.othersTestF, collector);
 	negativeMatch = collector.getTotalHits();
+	
+	totaltest += IndexInfoStaticG.totalTestDocsInCat;
 
 	F1test = ClassifyQuery.f1(positiveMatch, negativeMatch,
-			IndexInfoStaticG.totalTestDocsInCat);
+		IndexInfoStaticG.totalTestDocsInCat);
+		
+		totalpos +=positiveMatch
+		totalneg +=negativeMatch
 
 	println "Category: $cat F1test: $F1test  F1trina: $F1train query: $query"
 	println " -----------------------------------------------------------------"
@@ -80,8 +90,9 @@ for (cat in 0..9){
 }
 bestResultsOut.flush();
 
+println "toatl pos  $totalpos totalneg $totalneg"
+micro =  ClassifyQuery.f1(totalpos, totalneg, totaltest);
+			//IndexInfoStaticG.totalTestDocs);  
 
-
-
-
+println "TotalTest todcs = $IndexInfoStaticG.totalTestDocs   totalmeasured: $totaltest micro=$micro";
 

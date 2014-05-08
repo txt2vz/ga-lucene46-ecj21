@@ -1,19 +1,17 @@
 package query;
 
 import java.io.IOException;
-import java.util.Map;
-import java.util.TreeMap;
 
 import lucene.ImportantWords;
 import lucene.IndexInfoStaticG;
 
 import org.apache.lucene.index.Term;
+
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TotalHitCountCollector;
-import org.apache.lucene.search.spans.SpanFirstQuery;
-import org.apache.lucene.search.spans.SpanTermQuery;
 
 import ec.EvolutionState;
 import ec.Individual;
@@ -30,7 +28,7 @@ import ec.vector.IntegerVectorIndividual;
  * @author Laurie
  */
 
-public class ClassifySFGA extends Problem implements SimpleProblemForm {
+public class AND_OR extends Problem implements SimpleProblemForm {
 
 	private IndexSearcher searcher = IndexInfoStaticG.getIndexSearcher();
 
@@ -38,25 +36,21 @@ public class ClassifySFGA extends Problem implements SimpleProblemForm {
 
 	private String[] wordArray;
 
-	private BooleanQuery query;
+	private BooleanQuery query, subq;
 
 	public void setup(final EvolutionState state, final Parameter base) {
 
 		super.setup(state, base);
 
 		try {
-
-			ImportantWords importantWords = new ImportantWords();
-
 			System.out.println("Total docs for cat  "
 					+ IndexInfoStaticG.getCatnumberAsString() + " "
 					+ IndexInfoStaticG.totalTrainDocsInCat
 					+ " Total test docs for cat "
 					+ IndexInfoStaticG.totalTestDocsInCat);
 
-			wordArray = importantWords.getF1WordList(true, true);
-
-			System.out.println();
+			ImportantWords iw = new ImportantWords();
+			wordArray = iw.getF1WordList(false, true);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -74,28 +68,33 @@ public class ClassifySFGA extends Problem implements SimpleProblemForm {
 		IntegerVectorIndividual intVectorIndividual = (IntegerVectorIndividual) ind;
 
 		query = new BooleanQuery(true);
-//		query.setMinimumNumberShouldMatch(2);
-
-		// read through vector 2 ints at at time. 1st int retrieves word, second
-		// specifies end for Lucene spanFirstQuery
-		for (int i = 0; i < intVectorIndividual.genome.length; i = i + 2) {
-
-			if (intVectorIndividual.genome[i] < 0
-					|| intVectorIndividual.genome[i + 1] < 0  
-					|| intVectorIndividual.genome[i] >= wordArray.length
-					|| intVectorIndividual.genome[i + 1] >= ImportantWords.SPAN_FIRST_MAX_END)
+		int wordInd0, wordInd1;
+		
+		for (int i = 0; i < (intVectorIndividual.genome.length - 2); i = i + 2) {
+			
+			if (       intVectorIndividual.genome[i] >= wordArray.length
+					|| intVectorIndividual.genome[i] < 0
+					|| intVectorIndividual.genome[i +1] >= wordArray.length
+					|| intVectorIndividual.genome[i +1] < 0	
+					|| intVectorIndividual.genome[i] == intVectorIndividual.genome[i +1]
+					)
 				continue;
+			else
+			{
+				 wordInd0 = intVectorIndividual.genome[i];
+				 wordInd1 = intVectorIndividual.genome[i+1];
+			}
+			final String word0 = wordArray[wordInd0];
+			final String word1 = wordArray[wordInd1];
+			
+			subq = new BooleanQuery(true);
+			subq.add(new TermQuery(new Term(IndexInfoStaticG.FIELD_CONTENTS,
+					word0)), BooleanClause.Occur.MUST);
 
-			int wordInd = intVectorIndividual.genome[i];
-			final String word = wordArray[wordInd];
-
-			SpanFirstQuery sfq = new SpanFirstQuery(new SpanTermQuery(new Term(
-					IndexInfoStaticG.FIELD_CONTENTS, word)),
-					intVectorIndividual.genome[i + 1]);
-			query.add(sfq, BooleanClause.Occur.SHOULD);
+			subq.add(new TermQuery(new Term(IndexInfoStaticG.FIELD_CONTENTS,
+					word1)), BooleanClause.Occur.MUST);
+			query.add(subq, BooleanClause.Occur.SHOULD);
 		}
-
-		fitness.setNumberOfTerms(intVectorIndividual.genome.length / 2);
 
 		try {
 			TotalHitCountCollector collector = new TotalHitCountCollector();

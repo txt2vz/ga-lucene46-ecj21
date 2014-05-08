@@ -6,7 +6,6 @@ import lucene.ImportantWords;
 import lucene.IndexInfoStaticG;
 
 import org.apache.lucene.index.Term;
-
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
@@ -21,22 +20,15 @@ import ec.simple.SimpleProblemForm;
 import ec.util.Parameter;
 import ec.vector.IntegerVectorIndividual;
 
-/**
- * To generate queries to perform binary text classification using GA string of
- * integer pairs which are translated into spanFirst queries
- * 
- * @author Laurie
- */
-
-public class ClassifyANDORGAv2 extends Problem implements SimpleProblemForm {
+public class OR_NOT extends Problem implements SimpleProblemForm {
 
 	private IndexSearcher searcher = IndexInfoStaticG.getIndexSearcher();
 
 	private float F1train = 0;
 
-	private String[] wordArray;
+	private String[] wordArrayPos, wordArrayNeg;
 
-	private BooleanQuery query, subq;
+	private BooleanQuery query;
 
 	public void setup(final EvolutionState state, final Parameter base) {
 
@@ -50,7 +42,8 @@ public class ClassifyANDORGAv2 extends Problem implements SimpleProblemForm {
 					+ IndexInfoStaticG.totalTestDocsInCat);
 
 			ImportantWords iw = new ImportantWords();
-			wordArray = iw.getF1WordList(false, true);
+			wordArrayPos = iw.getF1WordList(false, true);
+			wordArrayNeg = iw.getF1WordList(false, false);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -68,32 +61,26 @@ public class ClassifyANDORGAv2 extends Problem implements SimpleProblemForm {
 		IntegerVectorIndividual intVectorIndividual = (IntegerVectorIndividual) ind;
 
 		query = new BooleanQuery(true);
-		int wordInd0, wordInd1;
-		
-		for (int i = 0; i < (intVectorIndividual.genome.length - 2); i = i + 2) {
-			
-			if (       intVectorIndividual.genome[i] >= wordArray.length
-					|| intVectorIndividual.genome[i] < 0
-					|| intVectorIndividual.genome[i +1] >= wordArray.length
-					|| intVectorIndividual.genome[i +1] < 0	
-					|| intVectorIndividual.genome[i] == intVectorIndividual.genome[i +1]
-					)
-				continue;
-			else
-			{
-				 wordInd0 = intVectorIndividual.genome[i];
-				 wordInd1 = intVectorIndividual.genome[i+1];
-			}
-			final String word0 = wordArray[wordInd0];
-			final String word1 = wordArray[wordInd1];
-			
-			subq = new BooleanQuery(true);
-			subq.add(new TermQuery(new Term(IndexInfoStaticG.FIELD_CONTENTS,
-					word0)), BooleanClause.Occur.MUST);
+		for (int i = 0; i < (intVectorIndividual.genome.length - 1); i = i + 1) {
 
-			subq.add(new TermQuery(new Term(IndexInfoStaticG.FIELD_CONTENTS,
-					word1)), BooleanClause.Occur.MUST);
-			query.add(subq, BooleanClause.Occur.SHOULD);
+			if (intVectorIndividual.genome[i] < 0
+					|| intVectorIndividual.genome[i] >= wordArrayPos.length
+					|| intVectorIndividual.genome[i] >= wordArrayNeg.length)
+
+				continue;
+			int wordInd = intVectorIndividual.genome[i];
+			if (i == 0)
+				query.add(
+						new TermQuery(new Term(IndexInfoStaticG.FIELD_CONTENTS,
+								wordArrayNeg[wordInd])),
+						BooleanClause.Occur.MUST_NOT);
+			else
+
+				query.add(
+						new TermQuery(new Term(IndexInfoStaticG.FIELD_CONTENTS,
+								wordArrayPos[wordInd])),
+						BooleanClause.Occur.SHOULD);
+
 		}
 
 		try {
