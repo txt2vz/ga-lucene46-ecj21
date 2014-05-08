@@ -6,10 +6,9 @@ import lucene.ImportantWords;
 import lucene.IndexInfoStaticG;
 
 import org.apache.lucene.index.Term;
-
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.IndexSearcher; 
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TotalHitCountCollector;
 
@@ -28,9 +27,10 @@ import ec.vector.IntegerVectorIndividual;
  * @author Laurie
  */
 
-public class ClassifyANDORGA extends Problem implements SimpleProblemForm {
+public class AND extends Problem implements SimpleProblemForm {
 
-	private IndexSearcher searcher = IndexInfoStaticG.getIndexSearcher();
+	private IndexSearcher searcher = IndexInfoStaticG
+			.getIndexSearcher();
 
 	private float F1train = 0;
 
@@ -43,6 +43,7 @@ public class ClassifyANDORGA extends Problem implements SimpleProblemForm {
 		super.setup(state, base);
 
 		try {
+		
 			System.out.println("Total docs for cat  "
 					+ IndexInfoStaticG.getCatnumberAsString() + " "
 					+ IndexInfoStaticG.totalTrainDocsInCat
@@ -72,39 +73,29 @@ public class ClassifyANDORGA extends Problem implements SimpleProblemForm {
 		for (int i = 0; i < (intVectorIndividual.genome.length - 1); i = i + 1) {
 
 			// any ints below 0 are ignored
-			if (intVectorIndividual.genome[i] < 0)
-				continue;
-
-			int wordInd = 0;
+			int wordInd;
 			if (intVectorIndividual.genome[i] >= wordArray.length
 					|| intVectorIndividual.genome[i] < 0)
-				wordInd = 0;
+				continue;
 			else
 				wordInd = intVectorIndividual.genome[i];
 
 			final String word = wordArray[wordInd];
 
-			if (i <= 4)
-				query.add(new TermQuery(new Term(
-						IndexInfoStaticG.FIELD_CONTENTS, word)),
-						BooleanClause.Occur.MUST);
-			else
-				query.add(new TermQuery(new Term(
-						IndexInfoStaticG.FIELD_CONTENTS, word)),
-						BooleanClause.Occur.SHOULD);
-
+			query.add(new TermQuery(
+					new Term(IndexInfoStaticG.FIELD_CONTENTS, word)),
+					BooleanClause.Occur.MUST);
 		}
 
 		try {
 			TotalHitCountCollector collector = new TotalHitCountCollector();
-			// TopScoreDocCollector collector = TopScoreDocCollector.create(0,
-			// false);
-			searcher.search(query, IndexInfoStaticG.catTrainF, collector);
+			searcher.search(query, IndexInfoStaticG.catTrainF,
+					collector);
 			final int positiveMatch = collector.getTotalHits();
 
-			// collector = TopScoreDocCollector.create(0, false);
 			collector = new TotalHitCountCollector();
-			searcher.search(query, IndexInfoStaticG.othersTrainF, collector);
+			searcher.search(query, IndexInfoStaticG.othersTrainF,
+					collector);
 			final int negativeMatch = collector.getTotalHits();
 
 			F1train = ClassifyQuery.f1(positiveMatch, negativeMatch,
@@ -126,4 +117,5 @@ public class ClassifyANDORGA extends Problem implements SimpleProblemForm {
 
 		ind.evaluated = true;
 	}
+
 }

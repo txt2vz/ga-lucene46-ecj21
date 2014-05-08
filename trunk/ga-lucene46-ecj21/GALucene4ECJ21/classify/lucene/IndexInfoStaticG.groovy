@@ -48,8 +48,10 @@ public class IndexInfoStaticG {
 
 	private final static String pathToIndex =
 	//	"C:\\Users\\laurie\\Java\\indexes\\index20News10B"
-	"C:\\Users\\laurie\\Java\\indexes\\indexReuters10NoDup";
+	//"C:\\Users\\laurie\\Java\\indexes\\indexReuters10NoDup";
 	//"C:\\Users\\laurie\\Java\\indexes\\indexOhsumed"
+	
+	"C:\\Users\\laurie\\Java\\indexes\\20NGb";
 	//"C:\\Users\\laurie\\Java\\indexes\\index20News"
 	//"C:\\Users\\laurie\\Java\\indexes\\index2WebKB"
 	static IndexSearcher indexSearcher;
@@ -67,7 +69,7 @@ public class IndexInfoStaticG {
 
 	public static BooleanQuery catTrainBQ, othersTrainBQ, catTestBQ, othersTestBQ;
 
-	public static int totalTrainDocsInCat, totalTestDocsInCat, totalOthersTrainDocs;
+	public static int totalTrainDocsInCat, totalTestDocsInCat, totalOthersTrainDocs, totalTestDocs;
 
 	private static final TermQuery trainQ = new TermQuery(new Term(
 	IndexInfoStaticG.FIELD_TEST_TRAIN, "train"));
@@ -134,7 +136,12 @@ public class IndexInfoStaticG {
 		collector  = new TotalHitCountCollector();
 		indexSearcher.search(trainQ, collector);
 		int totalTrain = collector.getTotalHits();
+		
+		collector  = new TotalHitCountCollector();
+		indexSearcher.search(testQ, collector);
+		totalTestDocs = collector.getTotalHits();
 
+		
 		catTrainF = new CachingWrapperFilter(new QueryWrapperFilter(catTrainBQ));
 		othersTrainF = new CachingWrapperFilter(new QueryWrapperFilter(
 				othersTrainBQ));

@@ -1,0 +1,14 @@
+parent.0		= classifyORGA.params
+
+
+#eval.problem = query.ClassifySFGA
+#eval.problem = query.ClassifyORGA
+#eval.problem = query.ClassifyANDGA
+#eval.problem = query.ClassifyORGAMinShould
+eval.problem = query.ClassifySpanNear10
+#eval.problem = query.ClassifyANDORGA
+
+
+
+
+

@@ -24,7 +24,7 @@ import org.apache.lucene.util.Version
 import org.apache.lucene.index.IndexWriter;
 
 class IndexDocsReutersNoDups {
-	def indexPath =  "C:\\Users\\laurie\\Java\\indexes\\indexReuters10NoDup" // Create Lucene index in this directory
+	def indexPath =  "C:\\Users\\laurie\\Java\\indexes\\indexReuters10NoDupDelete" // Create Lucene index in this directory
 	//def docsPath =  "C:\\Users\\laurie\\Dataset\\reuters-top10\\08_trade" // Index files in this directory
 	def docsPath =  "C:\\Users\\laurie\\Dataset\\reuters-top10" // Index files in this directory
 	def docsCatMap=[:]
@@ -91,8 +91,8 @@ class IndexDocsReutersNoDups {
 		//String querystr2 =  "08_trade";
 		// the "title" arg specifies the default field to use
 		// when no field is explicitly specified in the query.
-		Query q = new QueryParser(Version.LUCENE_45, IndexWrapperG.FIELD_CONTENTS, analyzer).parse(querystr);
-		//Query q = new QueryParser(Version.LUCENE_46, IndexWrapperG.FIELD_CATEGORY, analyzer).parse(querystr);
+		Query q = new QueryParser(Version.LUCENE_45, IndexInfoStaticG.FIELD_CONTENTS, analyzer).parse(querystr);
+		//Query q = new QueryParser(Version.LUCENE_46, IndexInfoStaticG.FIELD_CATEGORY, analyzer).parse(querystr);
 
 		// 3. search
 		int hitsPerPage = 5;
@@ -109,8 +109,8 @@ class IndexDocsReutersNoDups {
 		hits.each{
 			int docId = it.doc;
 			Document d = searcher.doc(docId);
-			println(d.get(IndexWrapperG.FIELD_TEST_TRAIN) + "\t" + d.get("path") + "\t" +
-					d.get(IndexWrapperG.FIELD_CATEGORY) );
+			println(d.get(IndexInfoStaticG.FIELD_TEST_TRAIN) + "\t" + d.get("path") + "\t" +
+					d.get(IndexInfoStaticG.FIELD_CATEGORY) );
 		}
 
 		println "YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY"
@@ -141,10 +141,10 @@ class IndexDocsReutersNoDups {
 		// field that is indexed (i.e. searchable), but don't tokenize
 		// the field into separate words and don't index term frequency
 		// or positional information:
-		Field pathField = new StringField(IndexWrapperG.FIELD_PATH, f.getPath(), Field.Store.YES);
+		Field pathField = new StringField(IndexInfoStaticG.FIELD_PATH, f.getPath(), Field.Store.YES);
 		doc.add(pathField);
 
-		doc.add(new TextField(IndexWrapperG.FIELD_CONTENTS, new BufferedReader(new InputStreamReader(fis, "UTF-8"))) );
+		doc.add(new TextField(IndexInfoStaticG.FIELD_CONTENTS, new BufferedReader(new InputStreamReader(fis, "UTF-8"))) );
 
 		def categoryList = docsCatMap.get(f.name)
 
@@ -152,13 +152,13 @@ class IndexDocsReutersNoDups {
 			println "l is  $categoryList ********************************************************************************************************************"
 
 		categoryList.each {
-			Field categoryField = new StringField(IndexWrapperG.FIELD_CATEGORY, it, Field.Store.YES);
+			Field categoryField = new StringField(IndexInfoStaticG.FIELD_CATEGORY, it, Field.Store.YES);
 			doc.add(categoryField)
 		}
 
 		String test_train
 		if ( f.canonicalPath.contains("test")) test_train="test" else test_train="train";
-		Field ttField = new StringField(IndexWrapperG.FIELD_TEST_TRAIN, test_train, Field.Store.YES)
+		Field ttField = new StringField(IndexInfoStaticG.FIELD_TEST_TRAIN, test_train, Field.Store.YES)
 		doc.add(ttField)
 
 		writer.addDocument(doc);

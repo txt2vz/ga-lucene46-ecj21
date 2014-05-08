@@ -25,12 +25,12 @@ import org.apache.lucene.util.Version
 import org.apache.lucene.index.IndexWriter;
 
 class Index20NewsB {
-	def indexPath =  "C:\\Users\\laurie\\Java\\indexes\\index20News10B"
+	def indexPath =  "C:\\Users\\laurie\\Java\\indexes\\20NGb"
 	//"C:\\Users\\laurie\\Java\\indexes\\index20News"
 
 	// Create Lucene index in this directory
 	//def docsPath =  "C:\\Users\\laurie\\Dataset\\reuters-top10\\08_trade" // Index files in this directory
-	def docsPath = "C:\\Users\\Laurie\\Dataset\\20NGb10"
+	def docsPath = "C:\\Users\\Laurie\\Dataset\\20bydate"
 	//"C:\\Users\\Laurie\\Dataset\\20bydate"
 
 	//"C:\\Users\\laurie\\Dataset\\reuters-top10" // Index files in this directory
@@ -47,14 +47,21 @@ class Index20NewsB {
 		println("Indexing to directory '" + indexPath + "'...");
 
 		Directory dir = FSDirectory.open(new File(indexPath));
-		EnglishAnalyzer en_an = new EnglishAnalyzer(Version.LUCENE_46);
-		//Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_46);
-		IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_46, en_an);//   analyzer);
+		
+	//	println "passed open"
+		//EnglishAnalyzer en_an = new EnglishAnalyzer(Version.LUCENE_48);
+		Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_48);
+	//	println "passed analyser"
+		IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_48, // en_an);
+		                                                                analyzer);
 
+																	//println "passed iwc"
 		//Codec c  = new DirectPostingsFormat();
 		// Create a new index in the directory, removing any
 		// previously indexed documents:
 		iwc.setOpenMode(OpenMode.CREATE);
+		
+	//	println "past create"
 		//iwc.setCodec(c);
 
 		// Optional: for better indexing performance, if you
@@ -65,18 +72,25 @@ class Index20NewsB {
 		iwc.setRAMBufferSizeMB(512.0);
 
 		IndexWriter writer = new IndexWriter(dir, iwc);  
-		
+
+		//println "passed writer"
 		def z=0
 	  
 
 		new File(docsPath).eachDir {
 			def catNumber=0;
 			it .eachDir {
+				
+				//println " it is $it"
 
 				it.eachFileRecurse {
-					if (!it.hidden && it.exists() && it.canRead() && !it.directory && !docsCatMap.containsKey(it.name)) {								
+					if (!it.hidden && it.exists() && it.canRead() && !it.directory){   //&& !docsCatMap.containsKey(it.name)) {	
+						
+					//	println "it is $it"							
 							
-							docsCatMap.put(it.name, catNumber)
+						//	docsCatMap.put(it.name, catNumber)
+							
+						//	println "map $docsCatMap"
 
 						indexDocs(writer,it, catNumber)
 					}
@@ -93,8 +107,8 @@ class Index20NewsB {
 		//String querystr2 =  "08_trade";
 		// the "title" arg specifies the default field to use
 		// when no field is explicitly specified in the query.
-		Query q = new QueryParser(Version.LUCENE_46, IndexInfoStaticG.FIELD_CONTENTS, en_an).parse(querystr);
-		//Query q = new QueryParser(Version.LUCENE_46, IndexWrapperG.FIELD_CATEGORY, analyzer).parse(querystr);
+		Query q = new QueryParser(Version.LUCENE_48, IndexInfoStaticG.FIELD_CONTENTS, analyzer).parse(querystr);
+		//Query q = new QueryParser(Version.LUCENE_48, IndexWrapperG.FIELD_CATEGORY, analyzer).parse(querystr);
 
 		// 3. search
 		int hitsPerPage = 5;
@@ -127,14 +141,16 @@ class Index20NewsB {
 	def indexDocs(IndexWriter writer, File f, categoryNumber)
 	throws IOException {
 
-		Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_46);
+	//	Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_48);
 
 		
-		//			println " parent ${f.getParent()}"
+				//	println " parent ${f.getParent()}"
 		//	println " parent parent " + f.getParentFile().getParentFile().name;
 
 		def doc = new Document()
 		FileInputStream fis=new FileInputStream(f);
+		
+	//	println "in indocsdocs"
 
 		// Construct a Field that is tokenized and indexed, but is not stored in the index verbatim.
 		//	doc.add(Field.Text("contents", fis))
@@ -144,7 +160,11 @@ class Index20NewsB {
 		// the field into separate words and don't index term frequency
 		// or positional information:
 		Field pathField = new StringField(IndexInfoStaticG.FIELD_PATH, f.getPath(), Field.Store.YES);
+		
+		//println "passed pathfield"
 		doc.add(pathField);
+		
+	//	println "passed doc.add"
 
 		doc.add(new TextField(IndexInfoStaticG.FIELD_CONTENTS, new BufferedReader(new InputStreamReader(fis, "UTF-8"))) );
 

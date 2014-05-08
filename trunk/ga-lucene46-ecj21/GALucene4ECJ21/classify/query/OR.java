@@ -8,7 +8,7 @@ import lucene.IndexInfoStaticG;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.IndexSearcher; 
+import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TotalHitCountCollector;
 
@@ -27,10 +27,9 @@ import ec.vector.IntegerVectorIndividual;
  * @author Laurie
  */
 
-public class ClassifyANDGA extends Problem implements SimpleProblemForm {
+public class OR extends Problem implements SimpleProblemForm {
 
-	private IndexSearcher searcher = IndexInfoStaticG
-			.getIndexSearcher();
+	private IndexSearcher searcher = IndexInfoStaticG.getIndexSearcher();
 
 	private float F1train = 0;
 
@@ -43,7 +42,6 @@ public class ClassifyANDGA extends Problem implements SimpleProblemForm {
 		super.setup(state, base);
 
 		try {
-		
 			System.out.println("Total docs for cat  "
 					+ IndexInfoStaticG.getCatnumberAsString() + " "
 					+ IndexInfoStaticG.totalTrainDocsInCat
@@ -68,23 +66,20 @@ public class ClassifyANDGA extends Problem implements SimpleProblemForm {
 
 		IntegerVectorIndividual intVectorIndividual = (IntegerVectorIndividual) ind;
 
-		// create query from Map
 		query = new BooleanQuery(true);
-		for (int i = 0; i < (intVectorIndividual.genome.length - 1); i = i + 1) {
 
-			// any ints below 0 are ignored
-			int wordInd;
-			if (intVectorIndividual.genome[i] >= wordArray.length
-					|| intVectorIndividual.genome[i] < 0)
+		for (int i = 0; i < intVectorIndividual.genome.length; i++) {
+
+			if (intVectorIndividual.genome[i] < 0
+				|| intVectorIndividual.genome[i] >= wordArray.length)
 				continue;
-			else
-				wordInd = intVectorIndividual.genome[i];
-
+				
+			int wordInd = intVectorIndividual.genome[i];
 			final String word = wordArray[wordInd];
 
 			query.add(new TermQuery(
 					new Term(IndexInfoStaticG.FIELD_CONTENTS, word)),
-					BooleanClause.Occur.MUST);
+					BooleanClause.Occur.SHOULD);
 		}
 
 		try {
@@ -117,5 +112,4 @@ public class ClassifyANDGA extends Problem implements SimpleProblemForm {
 
 		ind.evaluated = true;
 	}
-
 }
