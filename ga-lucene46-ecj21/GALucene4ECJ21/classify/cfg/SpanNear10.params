@@ -1,7 +1,7 @@
 parent.0		= OR.params
 
 eval.problem = query.SpanNear10
-pop.subpop.0.species.genome-size = 20
+pop.subpop.0.species.genome-size = 8
 
 
 

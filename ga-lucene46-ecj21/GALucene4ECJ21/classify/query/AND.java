@@ -1,6 +1,8 @@
 package query;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import lucene.ImportantWords;
 import lucene.IndexInfoStaticG;
@@ -67,6 +69,8 @@ public class AND extends Problem implements SimpleProblemForm {
 		GAFit fitness = (GAFit) ind.fitness;
 
 		IntegerVectorIndividual intVectorIndividual = (IntegerVectorIndividual) ind;
+		
+		Set<String> wordset = new HashSet<String>();
 
 		// create query from Map
 		query = new BooleanQuery(true);
@@ -79,13 +83,19 @@ public class AND extends Problem implements SimpleProblemForm {
 				continue;
 			else
 				wordInd = intVectorIndividual.genome[i];
-
+			wordset.add(wordArray[wordInd]);
+  
 			final String word = wordArray[wordInd];
-
 			query.add(new TermQuery(
 					new Term(IndexInfoStaticG.FIELD_CONTENTS, word)),
 					BooleanClause.Occur.MUST);
 		}
+		
+	//	for(String w:  wordset){
+		//	query.add(new TermQuery(
+		//				new Term(IndexInfoStaticG.FIELD_CONTENTS, w)),
+		//				BooleanClause.Occur.MUST);
+	//	}
 
 		try {
 			TotalHitCountCollector collector = new TotalHitCountCollector();

@@ -70,7 +70,7 @@ public class AND_OR extends Problem implements SimpleProblemForm {
 		query = new BooleanQuery(true);
 		int wordInd0, wordInd1;
 		
-		for (int i = 0; i < (intVectorIndividual.genome.length - 2); i = i + 2) {
+		for (int i = 0; i < (intVectorIndividual.genome.length - 1); i = i + 2) {
 			
 			if (       intVectorIndividual.genome[i] >= wordArray.length
 					|| intVectorIndividual.genome[i] < 0

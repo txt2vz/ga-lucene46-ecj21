@@ -1,7 +1,7 @@
 parent.0		= OR.params
 
 eval.problem = query.SpanFirstNOT
-pop.subpop.0.species.genome-size = 30
+pop.subpop.0.species.genome-size = 16
 #pop.subpop.1.species.genome-size = 20
 pop.subpop.0.species.chunk-size = 2
 
