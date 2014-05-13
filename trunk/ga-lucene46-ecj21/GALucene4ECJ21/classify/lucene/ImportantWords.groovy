@@ -77,6 +77,7 @@ public class ImportantWords {
 			     //|| StopSet.stopSet.contains(t.text())
 				 || stopSet.contains(t.text())
 				  ||t.text().contains("'")
+				  ||t.text().contains(".")
 				 ||!c.isLetter())
 						//|| stopSet.contains(t.text()))
 			continue;

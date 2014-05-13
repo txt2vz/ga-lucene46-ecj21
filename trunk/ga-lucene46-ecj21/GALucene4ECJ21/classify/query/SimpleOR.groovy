@@ -26,7 +26,7 @@ def totalpos=0
 def totalneg=0
 def totaltest=0
 
-for (cat in 0..9){
+for (cat in 0..19){
 	IndexInfoStaticG.setCatNumber(cat)
 
 	float F1train = 0;
@@ -45,7 +45,7 @@ for (cat in 0..9){
 
 	println "word is ${wordArray[0]}"
 
-	(0..4).each{
+	(0..3).each{
 
 		query.add(new TermQuery(
 				new Term(IndexInfoStaticG.FIELD_CONTENTS,  wordArray[it])),

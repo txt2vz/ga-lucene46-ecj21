@@ -54,6 +54,7 @@ public class IndexInfoStaticG {
 	"C:\\Users\\laurie\\Java\\indexes\\20NGb";
 	//"C:\\Users\\laurie\\Java\\indexes\\index20News"
 	//"C:\\Users\\laurie\\Java\\indexes\\index2WebKB"
+	
 	static IndexSearcher indexSearcher;
 
 	//private static int categoryNumber = 13;

@@ -61,7 +61,7 @@ public class OR_NOT extends Problem implements SimpleProblemForm {
 		IntegerVectorIndividual intVectorIndividual = (IntegerVectorIndividual) ind;
 
 		query = new BooleanQuery(true);
-		for (int i = 0; i < (intVectorIndividual.genome.length - 1); i = i + 1) {
+		for (int i = 0; i < (intVectorIndividual.genome.length); i = i + 1) {
 
 			if (intVectorIndividual.genome[i] < 0
 					|| intVectorIndividual.genome[i] >= wordArrayPos.length
