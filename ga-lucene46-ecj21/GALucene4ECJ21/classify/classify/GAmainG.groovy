@@ -19,13 +19,13 @@ class GAmainG extends Evolve {
 	private final String parameterFilePath =
 //	
 //	"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\OR.params";
-	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\OR_NOT.params";
+	"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\OR_NOT.params";
 	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\AND.params";
 	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\AND_OR.params";
 	// "C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\SpanFirst.params";
 //	 	"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\SpanFirstNOT.params";	
 //	"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\SpanNear10.params";
-	"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\ORMinShould.params";
+	//"C:\\Users\\Laurie\\Java\\classifyGALucene4ECJ21\\classify\\cfg\\ORMinShould.params";
 
 	private int totPosMatchedTest = 0, totTest = 0, totNegMatchTest = 0;
 
