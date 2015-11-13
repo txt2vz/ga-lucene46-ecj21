@@ -1,0 +1,1 @@
+uses lucene 6.6 and ecj 21
